@@ -1,9 +1,5 @@
 #include "tools.h"
 
-int triple(int a){
-    return a*3;
-}
-
 void copyFile(char* src, char* dest){
 
     int srcFile = open(src, O_RDONLY);
@@ -33,6 +29,8 @@ void reverse(char* src){
         printf("%c", c);
         value--;
     }
+
+    close(srcFile);
 }
 
 void ls(char* src){
@@ -81,6 +79,8 @@ void ls(char* src){
         printf("Last modification: \t%s", asctime(tm));
 
         directory = readdir(srcFolder);
+
+        closedir(srcFolder);
     }
     
 }

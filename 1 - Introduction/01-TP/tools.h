@@ -10,8 +10,6 @@
 #include <grp.h>
 #include <time.h>
 
-
-int triple(int a);
 void copyFile(char* src, char* dest);
 void reverse(char* src);
 void ls(char* src);
