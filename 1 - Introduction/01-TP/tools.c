@@ -79,8 +79,48 @@ void ls(char* src){
         printf("Last modification: \t%s", asctime(tm));
 
         directory = readdir(srcFolder);
-
+ 
         closedir(srcFolder);
     }
-    
+}
+
+FICHIER my_open(const char *path, const char *mode){
+
+    FICHIER file;
+
+    if(strcmp(mode, "r") == 0){
+        file.file = open(path, O_RDONLY);
+    }else if(strcmp(mode, "w") == 0){
+        file.file = open(path, O_WRONLY | O_CREAT, 0666);
+    }
+
+    char c; 
+
+    file.index = 0;
+
+    while(read(file.file, &c, 1) > 0){
+        file.buffer[file.index] = c;
+        file.index++;
+    }
+
+    return file;
+}
+
+char my_getc(FICHIER file){
+    if(file.index > 0){
+        file.index--;
+        return file.buffer[file.index];
+    }else{
+        return EOF;
+    }
+}
+
+char my_putc(char c, FICHIER file){
+    file.buffer[file.index] = c;
+    file.index++;
+    return c;
+}
+
+void my_close(FICHIER file){
+    close(file.file);
 }
