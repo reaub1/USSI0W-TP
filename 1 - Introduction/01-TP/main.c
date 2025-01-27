@@ -32,27 +32,29 @@ int main(int argc, char** argv) {
         }
     }    
     else if (strcmp(argv[1], "4") == 0) {
-        if (argc >= 3) {
-            FICHIER input = my_open(argv[2], "r");
-            FICHIER output = my_open(argv[3], "w"); 
+    if (argc >= 4) {
+        FICHIER input = my_open(argv[2], "r");
+        FICHIER output = my_open(argv[3], "w");
 
-            char c;
-
-            while((c = my_getc(input)) != EOF){
-                my_putc(c, output);
-            }
-
-            my_close(input);
-            my_close(output);
-
-            printf("File copied\n");
-        
-        } else {
-            printf("USAGE : ./TP1 4 [src] [dest]\n");
-            printf("Erreur : %s\n", strerror(EINVAL));
+        if (input.file == -1 || output.file == -1) {
+            printf("Failed to open files.\n");
+            return 1;
         }
-    
+
+        char c;
+        while ((c = my_getc(&input)) != EOF) {
+            my_putc(c, &output);
+        }
+
+        my_close(&input);
+        my_close(&output);
+
+        printf("File copied\n");
+    } else {
+        printf("USAGE : ./TP1 4 [src] [dest]\n");
+        printf("Erreur : %s\n", strerror(EINVAL));
     }
+}
     else {
         printf("Option inconnue : %s\n", argv[1]);
         printf("USAGE : ./TP1 [1|2|3] [src|number] [dest]\n");
