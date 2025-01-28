@@ -3,13 +3,13 @@ TARGET = TP3
 CC = gcc
 CFLAGS = -Wall -Wextra -g
 
-SRCS = main.c tools.c
+SRCS = thread-sample.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+	$(CC) $(OBJS) -o $(TARGET)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -21,6 +21,3 @@ distclean: clean
 
 run: $(TARGET)
 	./$(TARGET)
-
-main.o: main.c tools.h
-tools.o: tools.c tools.h
