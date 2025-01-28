@@ -1,19 +1,13 @@
 
-# TP2 - Appels système & processus
+# TP3 - Threads
 
-Ce programme permet d'exécuter plusieurs opérations sur les processus et la gestion des flux de données en utilisant les appels système. Les exercices incluent l'utilisation de `fork`, la redirection des flux standards, et la gestion des pipes.
+TO DO 
 
 ---
 
 ## Compilation
 
 Pour compiler le programme, utilisez la commande suivante :
-
-```bash
-gcc main.c tools.c -o TP2
-```
-
-Ou simplement :
 
 ```bash
 make
@@ -26,7 +20,7 @@ make
 Le programme s'exécute avec la syntaxe suivante :
 
 ```bash
-./TP3 1
+./TP3
 ```
 
 ### Commande disponible
