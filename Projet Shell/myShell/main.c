@@ -18,18 +18,12 @@ void finish_main_program() {
 
 void execute_builtin_command(char *args[]) {
     if (strcmp(args[0], "cd") == 0) {
-
-        // Commande "cd"
-
         if (args[1] == NULL) {
             fprintf(stderr, "cd: missing argument\n");
         } else if (chdir(args[1]) != 0) {
             perror("cd");
         }
     } else if (strcmp(args[0], "pwd") == 0) {
-
-        // Commande "pwd"
-
         char cwd[1024];
         if (getcwd(cwd, sizeof(cwd)) != NULL) {
             printf("%s\n", cwd);
@@ -37,17 +31,12 @@ void execute_builtin_command(char *args[]) {
             perror("pwd");
         }
     } else if (strcmp(args[0], "echo") == 0) {
-
-        // Commande "echo"
-
         for (int i = 1; args[i] != NULL; i++) {
             printf("%s ", args[i]);
         }
         printf("\n");
     } else if (strcmp(args[0], "exit") == 0) {
 
-        // Commande "exit"
-        
         exit(0);
     }
 }
@@ -57,7 +46,7 @@ int is_builtin_command(char *command) {
            strcmp(command, "echo") == 0 || strcmp(command, "exit") == 0;
 }
 
-void execute_command(char *command) {
+int execute_single_command(char *command) {
     char *args[MAX_ARGS];
     char *token = strtok(command, " ");
     int i = 0;
@@ -68,19 +57,16 @@ void execute_command(char *command) {
     }
     args[i] = NULL;
 
-    if (args[0] == NULL) {
-        return;
-    }
+    if (args[0] == NULL) return 0;
 
     if (is_builtin_command(args[0])) {
-        // Exécuter les commandes internes
         execute_builtin_command(args);
+        return 0;
     } else {
-        // Exécuter les commandes externes avec fork/execvp
         pid_t pid = fork();
         if (pid == -1) {
             perror("fork");
-            return;
+            return -1;
         }
 
         if (pid == 0) {
@@ -90,8 +76,52 @@ void execute_command(char *command) {
         } else {
             int status;
             waitpid(pid, &status, 0);
+            return WIFEXITED(status) ? WEXITSTATUS(status) : -1;
         }
     }
+}
+
+void execute_command(char *command) {
+    char *subcommands[MAX_ARGS];
+    int count = 0;
+    int exit_status = 0;
+    
+    char *token = strtok(command, "&&");
+    while (token != NULL && count < MAX_ARGS - 1) {
+        subcommands[count++] = token;
+        token = strtok(NULL, "&&");
+    }
+    subcommands[count] = NULL;
+
+    if (count > 1) {
+        for (int i = 0; i < count; i++) {
+            exit_status = execute_single_command(subcommands[i]);
+            if (exit_status != 0) {
+                return;
+            }
+        }
+        return;
+    }
+
+    count = 0;
+    token = strtok(command, "||");
+    while (token != NULL && count < MAX_ARGS - 1) {
+        subcommands[count++] = token;
+        token = strtok(NULL, "||");
+    }
+    subcommands[count] = NULL;
+
+    if (count > 1) {
+        for (int i = 0; i < count; i++) {
+            exit_status = execute_single_command(subcommands[i]);
+            if (exit_status == 0) {
+                return;
+            }
+        }
+        return;
+    }
+
+    execute_single_command(command);
 }
 
 int main() {
