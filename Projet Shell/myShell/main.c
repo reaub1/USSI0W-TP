@@ -1,13 +1,5 @@
 #include "mysh.h"
 
-void start_main_program() {
-    printf("Main program started\n");
-}
-
-void finish_main_program() {
-    printf("Main program finished\n");
-}
-
 void execute_builtin_command(char *args[]) {
     if (strcmp(args[0], "cd") == 0) {
         if (args[1] == NULL) {
@@ -34,8 +26,13 @@ void execute_builtin_command(char *args[]) {
 }
 
 int is_builtin_command(char *command) {
-    return strcmp(command, "cd") == 0 || strcmp(command, "pwd") == 0 ||
-           strcmp(command, "echo") == 0 || strcmp(command, "exit") == 0;
+    char *builtins[] = {"cd", "pwd", "echo", "exit", NULL};
+    for (int i = 0; builtins[i] != NULL; i++) {
+        if (strcmp(command, builtins[i]) == 0) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 int execute_single_command(char *command) {
@@ -51,9 +48,32 @@ int execute_single_command(char *command) {
 
     if (args[0] == NULL) return 0;
 
-    if (is_builtin_command(args[0])) {
-        execute_builtin_command(args);
+    if (strcmp(args[0], "cd") == 0) {
+    if (args[1] == NULL) {
+        fprintf(stderr, "cd: missing argument\n");
+    } else if (chdir(args[1]) != 0) {
+        perror("cd");
+    }
+    return 0;
+    } 
+    if (strcmp(args[0], "pwd") == 0) {
+        char cwd[1024];
+        if (getcwd(cwd, sizeof(cwd)) != NULL) {
+            printf("%s\n", cwd);
+        } else {
+            perror("pwd");
+        }
         return 0;
+    } 
+    if (strcmp(args[0], "echo") == 0) {
+        for (int i = 1; args[i] != NULL; i++) {
+            printf("%s ", args[i]);
+        }
+        printf("\n");
+        return 0;
+    } 
+    if (strcmp(args[0], "exit") == 0) {
+        exit(0);
     } else {
         pid_t pid = fork();
         if (pid == -1) {
@@ -75,6 +95,16 @@ int execute_single_command(char *command) {
 
 
 void execute_command(char *command) {
+    if (strstr(command, ">>")) {
+        execute_with_append_redirection(command);
+        return;
+    }
+    
+    if (strchr(command, '<')) {
+        execute_with_input_redirection(command);
+        return;
+    }
+
     if (strchr(command, '|')) {
         execute_with_pipe(command);
         return;
@@ -85,56 +115,117 @@ void execute_command(char *command) {
         return;
     }
 
-    char *subcommands[MAX_ARGS];
-    int count = 0;
-    int exit_status = 0;
-    
-    char *token = strtok(command, "&&");
-    while (token != NULL && count < MAX_ARGS - 1) {
-        subcommands[count++] = token;
-        token = strtok(NULL, "&&");
-    }
-    subcommands[count] = NULL;
-
-    if (count > 1) {
-        for (int i = 0; i < count; i++) {
-            exit_status = execute_single_command(subcommands[i]);
-            if (exit_status != 0) {
-                return;
-            }
-        }
-        return;
-    }
-
-    count = 0;
-    token = strtok(command, "||");
-    while (token != NULL && count < MAX_ARGS - 1) {
-        subcommands[count++] = token;
-        token = strtok(NULL, "||");
-    }
-    subcommands[count] = NULL;
-
-    if (count > 1) {
-        for (int i = 0; i < count; i++) {
-            exit_status = execute_single_command(subcommands[i]);
-            if (exit_status == 0) {
-                return;
-            }
-        }
-        return;
-    }
-
     execute_single_command(command);
+}
+
+void execute_with_input_redirection(char *command) {
+    char *cmd = strtok(command, "<");
+    char *filename = strtok(NULL, "<");
+
+    if (!cmd || !filename) {
+        fprintf(stderr, "Erreur de syntaxe pour la redirection `<`\n");
+        return;
+    }
+
+    while (*filename == ' ') filename++;
+    filename[strcspn(filename, " ")] = '\0';
+
+    int fd;
+    if (strstr(command, "<<")) {
+        // Mode Heredoc
+        printf("Heredoc (<<) non implémenté complètement\n");
+        return;
+    } else {
+        // Mode simple <
+        fd = open(filename, O_RDONLY);
+    }
+
+    if (fd == -1) {
+        perror("open");
+        return;
+    }
+
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("fork");
+        close(fd);
+        return;
+    }
+
+    if (pid == 0) {
+        dup2(fd, STDIN_FILENO);
+        close(fd);
+
+        char *args[MAX_ARGS];
+        char *token = strtok(cmd, " ");
+        int i = 0;
+        while (token != NULL && i < MAX_ARGS - 1) {
+            args[i++] = token;
+            token = strtok(NULL, " ");
+        }
+        args[i] = NULL;
+
+        execvp(args[0], args);
+        perror("execvp");
+        exit(EXIT_FAILURE);
+    } else {
+        close(fd);
+        int status;
+        waitpid(pid, &status, 0);
+    }
+}
+
+void execute_with_append_redirection(char *command) {
+    char *cmd = strtok(command, ">>");
+    char *filename = strtok(NULL, ">>");
+
+    if (!cmd || !filename) {
+        fprintf(stderr, "Erreur de syntaxe pour la redirection `>>`\n");
+        return;
+    }
+
+    while (*filename == ' ') filename++;
+    filename[strcspn(filename, " ")] = '\0';
+
+    int fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    if (fd == -1) {
+        perror("open");
+        return;
+    }
+
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("fork");
+        close(fd);
+        return;
+    }
+
+    if (pid == 0) {
+        dup2(fd, STDOUT_FILENO);
+        close(fd);
+
+        char *args[MAX_ARGS];
+        char *token = strtok(cmd, " ");
+        int i = 0;
+        while (token != NULL && i < MAX_ARGS - 1) {
+            args[i++] = token;
+            token = strtok(NULL, " ");
+        }
+        args[i] = NULL;
+
+        execvp(args[0], args);
+        perror("execvp");
+        exit(EXIT_FAILURE);
+    } else {
+        close(fd);
+        int status;
+        waitpid(pid, &status, 0);
+    }
 }
 
 void execute_with_redirection(char *command) {
     char *cmd = strtok(command, ">");
     char *filename = strtok(NULL, ">");
-
-    printf("command with redirection detected with : %s\n", command);
-
-    printf("cmd: %s\n", cmd);
-    printf("filename: %s\n", filename);
 
     if (!cmd || !filename) {
         fprintf(stderr, "Erreur de syntaxe pour la redirection `>`\n");
@@ -237,8 +328,6 @@ void execute_with_pipe(char *command) {
 int main() {
     char command[MAX_COMMAND_LENGTH];
 
-    start_main_program();
-
     while (1) {
         printf("my_sh> ");
         fflush(stdout);
@@ -256,7 +345,5 @@ int main() {
 
         execute_command(command);
     }
-
-    finish_main_program();
     return 0;
 }
