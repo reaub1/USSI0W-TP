@@ -11,7 +11,7 @@
 | **FM02.2** | Gérer les redirections `\|`, `>`, `<`, `>>`, `<<` | ✅ Fait |
 | **FM02.3** | Gérer l’exécution en arrière-plan `&` | ❌ À faire |
 | **FM03** | Implémenter des commandes internes (`cd`, `pwd`, `echo`, `exit`) | ✅ Fait |
-| **FM04** | Sauvegarder l’historique des commandes dans un fichier | ❌ À faire |
+| **FM04** | Sauvegarder l’historique des commandes dans un fichier | ✅ Fait |
 | **FM05** | Ajouter un mode batch (`./my_sh -c "ls -al \| grep toto"`) | ❌ À faire |
 | **FM06** | Gérer des variables d’environnement (`VAR=value`) | ❌ À faire |
 | **FM07** | Ajouter des alias (`alias ll="ls -al"`) | ❌ À faire |
@@ -34,6 +34,6 @@
 ## 📝 Notes de développement
 - **Approche incrémentale** : on implémente d’abord la base, puis on ajoute progressivement les fonctionnalités.
 - **Prochaines étapes** :
-  1. Sauvegarder l’historique des commandes.
-  2. Gérer l’exécution en arrière-plan &.
-  3. Découpage en plusieurs .h et .c.
+  1. Gérer l’exécution en arrière-plan &..
+  2. Découpage en plusieurs .h et .c.
+  3. Ajouter un mode batch.

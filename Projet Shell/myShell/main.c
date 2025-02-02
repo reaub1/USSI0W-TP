@@ -1,6 +1,7 @@
 #include "mysh.h"
 
 void execute_builtin_command(char *args[]) {
+    printf("execute_builtin_command\n");
     if (strcmp(args[0], "cd") == 0) {
         if (args[1] == NULL) {
             fprintf(stderr, "cd: missing argument\n");
@@ -19,16 +20,23 @@ void execute_builtin_command(char *args[]) {
             printf("%s ", args[i]);
         }
         printf("\n");
-    } else if (strcmp(args[0], "exit") == 0) {
+    }
+    else if (strcmp(args[0], "history") == 0) {
+        printf("history command detected\n");
+        show_history();
+    }
+     else if (strcmp(args[0], "exit") == 0) {
 
         exit(0);
     }
+    
 }
 
 int is_builtin_command(char *command) {
-    char *builtins[] = {"cd", "pwd", "echo", "exit", NULL};
+    char *builtins[] = {"cd", "pwd", "echo", "exit","history", NULL};
     for (int i = 0; builtins[i] != NULL; i++) {
         if (strcmp(command, builtins[i]) == 0) {
+            
             return 1;
         }
     }
@@ -95,6 +103,8 @@ int execute_single_command(char *command) {
 
 
 void execute_command(char *command) {
+    save_command_to_history(command);
+
     if (strstr(command, ">>")) {
         execute_with_append_redirection(command);
         return;
@@ -115,7 +125,23 @@ void execute_command(char *command) {
         return;
     }
 
-    execute_single_command(command);
+    char *args[MAX_ARGS];
+    char *token = strtok(command, " ");
+    int i = 0;
+
+    while (token != NULL && i < MAX_ARGS - 1) {
+        args[i++] = token;
+        token = strtok(NULL, " ");
+    }
+    args[i] = NULL;
+
+    if (args[0] == NULL) return;
+
+    if (is_builtin_command(args[0])) {
+        execute_builtin_command(args);
+    } else {
+        execute_single_command(command);
+    }
 }
 
 void execute_with_input_redirection(char *command) {
@@ -325,8 +351,45 @@ void execute_with_pipe(char *command) {
     waitpid(pid2, NULL, 0);
 }
 
+void load_command_history() {
+    FILE *file = fopen(HISTORY_FILE, "r");
+    if (!file) return;
+
+    char line[1024];
+    while (fgets(line, sizeof(line), file)) {
+        line[strcspn(line, "\n")] = '\0';
+    }
+
+    fclose(file);
+}
+
+void save_command_to_history(const char *command) {
+    FILE *file = fopen(HISTORY_FILE, "a");
+    if (!file) return;
+    
+    fprintf(file, "%s\n", command);
+    fclose(file);
+}
+
+void show_history() {
+    FILE *file = fopen(HISTORY_FILE, "r");
+    if (!file) {
+        printf("Aucun historique disponible.\n");
+        return;
+    }
+
+    char line[1024];
+    int index = 1;
+    while (fgets(line, sizeof(line), file)) {
+        printf("%d %s", index++, line);
+    }
+
+    fclose(file);
+}
+
 int main() {
     char command[MAX_COMMAND_LENGTH];
+    load_command_history();
 
     while (1) {
         printf("my_sh> ");
