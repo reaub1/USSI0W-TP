@@ -7,8 +7,8 @@
 |--------------|------------|--------|
 | **FM01** | Exécuter une commande simple (`ls`, `ps`, `who`...) | ✅ Fait |
 | **FM02** | Exécuter un sous-ensemble de commandes (max 3) | 🚧 En cours |
-| **FM02.1** | Gérer les opérateurs `&&` et `||` | ❌ À faire |
-| **FM02.2** | Gérer les redirections `\|`, `>`, `<`, `>>`, `<<` | ❌ À faire |
+| **FM02.1** | Gérer les opérateurs `&&` et `\|\|` | ✅ Fait |
+| **FM02.2** | Gérer les redirections `\|`, `>`, `<`, `>>`, `<<` | 🚧 En cours|
 | **FM02.3** | Gérer l’exécution en arrière-plan `&` | ❌ À faire |
 | **FM03** | Implémenter des commandes internes (`cd`, `pwd`, `echo`, `exit`) | ✅ Fait |
 | **FM04** | Sauvegarder l’historique des commandes dans un fichier | ❌ À faire |
@@ -34,7 +34,6 @@
 ## 📝 Notes de développement
 - **Approche incrémentale** : on implémente d’abord la base, puis on ajoute progressivement les fonctionnalités.
 - **Prochaines étapes** :
-  1. Ajouter la gestion des opérateurs `&&` et `||`.
-  2. Implémenter la redirection `|` et `>`.
-  3. Sauvegarder l’historique des commandes.
-
+  1. Implémenter la redirection `<`, `>>` et `<<`.
+  2. Sauvegarder l’historique des commandes.
+  3. Gérer l’exécution en arrière-plan &

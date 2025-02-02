@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <errno.h>
-
-#define MAX_COMMAND_LENGTH 1024
-#define MAX_ARGS 64
+#include "mysh.h"
 
 void start_main_program() {
     printf("Main program started\n");
@@ -81,7 +73,18 @@ int execute_single_command(char *command) {
     }
 }
 
+
 void execute_command(char *command) {
+    if (strchr(command, '|')) {
+        execute_with_pipe(command);
+        return;
+    }
+
+    if (strchr(command, '>')) {
+        execute_with_redirection(command);
+        return;
+    }
+
     char *subcommands[MAX_ARGS];
     int count = 0;
     int exit_status = 0;
@@ -122,6 +125,113 @@ void execute_command(char *command) {
     }
 
     execute_single_command(command);
+}
+
+void execute_with_redirection(char *command) {
+    char *cmd = strtok(command, ">");
+    char *filename = strtok(NULL, ">");
+
+    printf("command with redirection detected with : %s\n", command);
+
+    printf("cmd: %s\n", cmd);
+    printf("filename: %s\n", filename);
+
+    if (!cmd || !filename) {
+        fprintf(stderr, "Erreur de syntaxe pour la redirection `>`\n");
+        return;
+    }
+
+    while (*filename == ' ') filename++;
+    filename[strcspn(filename, " ")] = '\0';
+
+    int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd == -1) {
+        perror("open");
+        return;
+    }
+
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("fork");
+        close(fd);
+        return;
+    }
+
+    if (pid == 0) {
+        dup2(fd, STDOUT_FILENO);
+        close(fd);
+
+        char *args[MAX_ARGS];
+        char *token = strtok(cmd, " ");
+        int i = 0;
+        while (token != NULL && i < MAX_ARGS - 1) {
+            args[i++] = token;
+            token = strtok(NULL, " ");
+        }
+        args[i] = NULL;
+
+        execvp(args[0], args);
+        perror("execvp");
+        exit(EXIT_FAILURE);
+    } else {
+        close(fd);
+        int status;
+        waitpid(pid, &status, 0);
+    }
+}
+
+void execute_with_pipe(char *command) {
+    char *cmd1 = strtok(command, "|");
+    char *cmd2 = strtok(NULL, "|");
+
+    if (!cmd1 || !cmd2) {
+        fprintf(stderr, "Erreur de syntaxe pour le pipe `|`\n");
+        return;
+    }
+
+    while (*cmd2 == ' ') cmd2++;
+
+    int pipefd[2];
+    if (pipe(pipefd) == -1) {
+        perror("pipe");
+        return;
+    }
+
+    pid_t pid1 = fork();
+    if (pid1 == -1) {
+        perror("fork");
+        return;
+    }
+
+    if (pid1 == 0) {
+        close(pipefd[0]);
+        dup2(pipefd[1], STDOUT_FILENO);
+        close(pipefd[1]);
+
+        execute_single_command(cmd1);
+        exit(EXIT_FAILURE);
+    }
+
+    pid_t pid2 = fork();
+    if (pid2 == -1) {
+        perror("fork");
+        return;
+    }
+
+    if (pid2 == 0) {
+        close(pipefd[1]);
+        dup2(pipefd[0], STDIN_FILENO);
+        close(pipefd[0]);
+
+        execute_single_command(cmd2);
+        exit(EXIT_FAILURE);
+    }
+
+    close(pipefd[0]);
+    close(pipefd[1]);
+
+    waitpid(pid1, NULL, 0);
+    waitpid(pid2, NULL, 0);
 }
 
 int main() {
