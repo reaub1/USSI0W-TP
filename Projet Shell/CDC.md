@@ -9,7 +9,7 @@
 | **FM02** | Exécuter un sous-ensemble de commandes (max 3) | 🚧 En cours |
 | **FM02.1** | Gérer les opérateurs `&&` et `\|\|` | ✅ Fait |
 | **FM02.2** | Gérer les redirections `\|`, `>`, `<`, `>>`, `<<` | ✅ Fait |
-| **FM02.3** | Gérer l’exécution en arrière-plan `&` | ❌ À faire |
+| **FM02.3** | Gérer l’exécution en arrière-plan `&` | ✅ Fait |
 | **FM03** | Implémenter des commandes internes (`cd`, `pwd`, `echo`, `exit`) | ✅ Fait |
 | **FM04** | Sauvegarder l’historique des commandes dans un fichier | ✅ Fait |
 | **FM05** | Ajouter un mode batch (`./my_sh -c "ls -al \| grep toto"`) | ❌ À faire |
@@ -34,6 +34,6 @@
 ## 📝 Notes de développement
 - **Approche incrémentale** : on implémente d’abord la base, puis on ajoute progressivement les fonctionnalités.
 - **Prochaines étapes** :
-  1. Gérer l’exécution en arrière-plan &..
-  2. Découpage en plusieurs .h et .c.
-  3. Ajouter un mode batch.
+  1. Découpage en plusieurs .h et .c.
+  2. Ajouter un mode batch.
+  3. Gérer des variables d’environnement.

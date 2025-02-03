@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 #define MAX_COMMAND_LENGTH 1024
 #define MAX_ARGS 64

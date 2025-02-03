@@ -1,5 +1,10 @@
 #include "mysh.h"
 
+
+void handle_sigchld() {
+    while (waitpid(-1, NULL, WNOHANG) > 0);
+}
+
 void execute_builtin_command(char *args[]) {
     printf("execute_builtin_command\n");
     if (strcmp(args[0], "cd") == 0) {
@@ -45,62 +50,48 @@ int is_builtin_command(char *command) {
 
 int execute_single_command(char *command) {
     char *args[MAX_ARGS];
-    char *token = strtok(command, " ");
     int i = 0;
+    int background = 0;
 
+    char *token = strtok(command, " \t");
     while (token != NULL && i < MAX_ARGS - 1) {
+        if (strcmp(token, "&") == 0) {
+            background = 1;
+            break;
+        }
         args[i++] = token;
-        token = strtok(NULL, " ");
+        token = strtok(NULL, " \t");
     }
     args[i] = NULL;
 
     if (args[0] == NULL) return 0;
 
-    if (strcmp(args[0], "cd") == 0) {
-    if (args[1] == NULL) {
-        fprintf(stderr, "cd: missing argument\n");
-    } else if (chdir(args[1]) != 0) {
-        perror("cd");
+    printf("Executing: ");
+    for (int j = 0; args[j] != NULL; j++) {
+        printf("[%s] ", args[j]);
     }
-    return 0;
-    } 
-    if (strcmp(args[0], "pwd") == 0) {
-        char cwd[1024];
-        if (getcwd(cwd, sizeof(cwd)) != NULL) {
-            printf("%s\n", cwd);
-        } else {
-            perror("pwd");
-        }
-        return 0;
-    } 
-    if (strcmp(args[0], "echo") == 0) {
-        for (int i = 1; args[i] != NULL; i++) {
-            printf("%s ", args[i]);
-        }
-        printf("\n");
-        return 0;
-    } 
-    if (strcmp(args[0], "exit") == 0) {
-        exit(0);
-    } else {
-        pid_t pid = fork();
-        if (pid == -1) {
-            perror("fork");
-            return -1;
-        }
+    printf("\n");
 
-        if (pid == 0) {
-            execvp(args[0], args);
-            perror("execvp");
-            exit(EXIT_FAILURE);
-        } else {
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("fork");
+        return -1;
+    }
+
+    if (pid == 0) {
+        execvp(args[0], args);
+        perror("execvp");
+        exit(EXIT_FAILURE);
+    } else {
+        if (!background) {
             int status;
             waitpid(pid, &status, 0);
-            return WIFEXITED(status) ? WEXITSTATUS(status) : -1;
+        } else {
+            printf("Processus en arrière-plan lancé avec PID %d\n", pid);
         }
     }
+    return 0;
 }
-
 
 void execute_command(char *command) {
     save_command_to_history(command);
@@ -126,6 +117,7 @@ void execute_command(char *command) {
     }
 
     char *args[MAX_ARGS];
+    char *command_copy = strdup(command);
     char *token = strtok(command, " ");
     int i = 0;
 
@@ -140,7 +132,7 @@ void execute_command(char *command) {
     if (is_builtin_command(args[0])) {
         execute_builtin_command(args);
     } else {
-        execute_single_command(command);
+        execute_single_command(command_copy);
     }
 }
 
@@ -158,7 +150,7 @@ void execute_with_input_redirection(char *command) {
 
     int fd;
     if (strstr(command, "<<")) {
-        // Mode Heredoc
+        // Mode heredoc
         printf("Heredoc (<<) non implémenté complètement\n");
         return;
     } else {
@@ -389,6 +381,7 @@ void show_history() {
 
 int main() {
     char command[MAX_COMMAND_LENGTH];
+    signal(SIGCHLD, handle_sigchld);
     load_command_history();
 
     while (1) {
