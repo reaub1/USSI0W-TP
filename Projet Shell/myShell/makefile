@@ -1,16 +1,25 @@
+NAME = my_sh
+
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-TARGET = my_sh
+CFLAGS = -Wall -Wextra -Werror -g
 
-all: $(TARGET)
+SRCS = main.c execution.c builtin_commands.c command_history.c utils.c
+OBJS = $(SRCS:.c=.o)
 
-$(TARGET): main.o
-	$(CC) $(CFLAGS) -o $(TARGET) main.o
+all: $(NAME)
 
-main.o: main.c
-	$(CC) $(CFLAGS) -c main.c
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f $(OBJS)
 
-.PHONY: all clean
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
