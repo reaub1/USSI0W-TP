@@ -6,10 +6,11 @@
 
 void execute_single_command(char *command) {
     char *args[MAX_ARGS];
+    char *command_copy = strdup(command);
     int i = 0;
     int background = 0;
-
     char *token = strtok(command, " \t");
+
     while (token != NULL && i < MAX_ARGS - 1) {
         if (strcmp(token, "&") == 0) {
             background = 1;
@@ -21,6 +22,14 @@ void execute_single_command(char *command) {
     args[i] = NULL;
 
     if (args[0] == NULL) return;
+
+    if (is_builtin_command(args[0])) {
+        execute_builtin_command(args);
+    } else {
+        execute_single_command(command_copy);
+    }
+
+    free(command_copy);
 
     printf("Executing: ");
     for (int j = 0; args[j] != NULL; j++) {
