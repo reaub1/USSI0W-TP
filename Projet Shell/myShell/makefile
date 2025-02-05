@@ -2,6 +2,7 @@ NAME = my_sh
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS=-Wall -Wextra -Werror -arch x86_64
 
 SRCS = main.c execution.c builtin_commands.c command_history.c utils.c
 OBJS = $(SRCS:.c=.o)
