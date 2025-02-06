@@ -3,7 +3,6 @@
 #include "command_history.h"
 
 void execute_builtin_command(char *args[]) {
-    printf("execute_builtin_command\n");
     if (strcmp(args[0], "cd") == 0) {
         if (args[1] == NULL) {
             fprintf(stderr, "cd: missing argument\n");
@@ -21,7 +20,7 @@ void execute_builtin_command(char *args[]) {
         for (int i = 1; args[i] != NULL; i++) {
             printf("%s ", args[i]);
         }
-        printf("\n");
+        printf( "End of the echo \n");
     }
     else if (strcmp(args[0], "history") == 0) {
         printf("history command detected\n");

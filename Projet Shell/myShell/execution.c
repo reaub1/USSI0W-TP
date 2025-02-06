@@ -254,13 +254,13 @@ void execute_with_pipe(char *command) {
 }
 
 void execute_command(char *command) {
-    if (strstr(command, "<")) {
+    if (strstr(command, " < ")) {
         execute_with_input_redirection(command);
-    } else if (strstr(command, ">>")) {
+    } else if (strstr(command, " >> ")) {
         execute_with_append_redirection(command);
-    } else if (strstr(command, ">")) {
+    } else if (strstr(command, " > ")) {
         execute_with_redirection(command);
-    } else if (strstr(command, "|")) {
+    } else if (strstr(command, " | ")) {
         execute_with_pipe(command);
     } else {
         execute_single_command(command);
