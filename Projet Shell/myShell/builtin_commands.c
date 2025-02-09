@@ -132,14 +132,14 @@ void execute_builtin_command(char *args[]) {
         if (args[1] == NULL) {
             fprintf(stderr, "cd: missing argument\n");
         } else if (chdir(args[1]) != 0) {
-            perror("cd");
+            print_error("Échec de la commande cd");
         }
     } else if (strcmp(args[0], "pwd") == 0) {
         char cwd[1024];
         if (getcwd(cwd, sizeof(cwd)) != NULL) {
             printf("%s\n", cwd);
         } else {
-            perror("pwd");
+            print_error("Impossible d'obtenir le répertoire courant");
         }
     } else if (strcmp(args[0], "echo") == 0) {
         for (int i = 1; args[i] != NULL; i++) {
@@ -151,6 +151,9 @@ void execute_builtin_command(char *args[]) {
         show_history();
     }
     else if (strcmp(args[0], "exit") == 0) {
+        if (args[1] != NULL) {
+            print_error("exit ne prend pas d'arguments");
+        }
         exit(0);
     }
 }

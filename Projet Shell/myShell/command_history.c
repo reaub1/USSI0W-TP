@@ -31,14 +31,19 @@ void load_command_history() {
     
     FILE *file = fopen(history_file, "r");
     free(history_file);
-    if (!file) return;
+    if (!file) {
+        print_error("Impossible d'ouvrir le fichier d'historique en lecture");
+        return;
+    }
 
     char line[1024];
     while (fgets(line, sizeof(line), file)) {
         line[strcspn(line, "\n")] = '\0';
     }
 
-    fclose(file);
+    if (fclose(file) != 0) {
+        print_error("Erreur lors de la fermeture du fichier d'historique");
+    }
 }
 
 void save_command_to_history(const char *command) {
@@ -47,14 +52,22 @@ void save_command_to_history(const char *command) {
     
     FILE *file = fopen(history_file, "a");
     if (!file) {
+        print_error("Impossible de sauvegarder dans l'historique");
+        {
         free(history_file);
         return;
     }
 
     //printf("command writed");
+    }
     
-    fprintf(file, "%s\n", command);
-    fclose(file);
+    if (fprintf(file, "%s\n", command) < 0) {
+        print_error("Erreur lors de l'écriture dans le fichier d'historique");
+    }
+
+    if (fclose(file) != 0) {
+        print_error("Erreur lors de la fermeture du fichier d'historique");
+    }
     free(history_file);
 }
 
@@ -66,7 +79,7 @@ void show_history() {
 
     free(history_file);
     if (!file) {
-        printf("Aucun historique disponible.\n");
+        print_error("Aucun historique disponible");
         return;
     }
 
@@ -76,5 +89,7 @@ void show_history() {
         printf("%d %s", index++, line);
     }
 
-    fclose(file);
+    if (fclose(file) != 0) {
+        print_error("Erreur lors de la fermeture du fichier d'historique");
+    }
 }
