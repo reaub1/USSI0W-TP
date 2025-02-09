@@ -6,6 +6,8 @@
 #include <errno.h>
 #include "builtin_commands.h"
 
+#include <errno.h>
+#include "utils.h"
 
 void execute_single_command(char *command) {
     char *args[MAX_ARGS];
@@ -32,7 +34,7 @@ void execute_single_command(char *command) {
 
     pid_t pid = fork();
     if (pid == -1) {
-        perror("fork");
+        print_error("Échec du fork");
         return;
     }
 
@@ -58,7 +60,7 @@ void execute_single_command(char *command) {
 
         } else {
             if (execvp(args[0], args) == -1) {
-                perror("execvp");
+                print_error("Échec de l'exécution de la commande");
                 printf("Commande introuvable : %s\n", args[0]);
                 exit(EXIT_FAILURE);
             }
@@ -66,7 +68,9 @@ void execute_single_command(char *command) {
     } else {
         if (!background) {
             int status;
-            waitpid(pid, &status, 0);
+            if (waitpid(pid, &status, 0) == -1) {
+                print_error("Échec de l'attente du processus");
+            }
         } else {
             printf("Processus en arrière-plan lancé avec PID %d\n", pid);
         }
@@ -78,7 +82,7 @@ void execute_with_input_redirection(char *command) {
     char *filename = strtok(NULL, "<");
 
     if (!cmd || !filename) {
-        fprintf(stderr, "Erreur de syntaxe pour la redirection `<`\n");
+        print_syntax_error("redirection `<` incorrecte");
         return;
     }
 
@@ -88,7 +92,7 @@ void execute_with_input_redirection(char *command) {
     int fd;
     if (strstr(command, "<<")) {
         // Mode heredoc
-        printf("Heredoc (<<) non implémenté complètement\n");
+        print_syntax_error("Mode heredoc (<<) non implémenté");
         return;
     } else {
         // Mode simple <
@@ -96,13 +100,13 @@ void execute_with_input_redirection(char *command) {
     }
 
     if (fd == -1) {
-        perror("open");
+        print_error("Impossible d'ouvrir le fichier en écriture");
         return;
     }
 
     pid_t pid = fork();
     if (pid == -1) {
-        perror("fork");
+        print_error("Échec du fork");
         close(fd);
         return;
     }
@@ -121,12 +125,14 @@ void execute_with_input_redirection(char *command) {
         args[i] = NULL;
 
         execvp(args[0], args);
-        perror("execvp");
+        print_error("Échec de l'exécution de la commande");
         exit(EXIT_FAILURE);
     } else {
         close(fd);
         int status;
-        waitpid(pid, &status, 0);
+        if (waitpid(pid, &status, 0) == -1) {
+            print_error("Échec de l'attente du processus");
+        }
     }
 }
 
@@ -135,7 +141,7 @@ void execute_with_append_redirection(char *command) {
     char *filename = strtok(NULL, ">>");
 
     if (!cmd || !filename) {
-        fprintf(stderr, "Erreur de syntaxe pour la redirection `>>`\n");
+        print_syntax_error("redirection `>>` incorrecte");
         return;
     }
 
@@ -144,13 +150,13 @@ void execute_with_append_redirection(char *command) {
 
     int fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
     if (fd == -1) {
-        perror("open");
+        print_error("Impossible d'ouvrir le fichier en écriture");
         return;
     }
 
     pid_t pid = fork();
     if (pid == -1) {
-        perror("fork");
+        print_error("Échec du fork");
         close(fd);
         return;
     }
@@ -169,12 +175,14 @@ void execute_with_append_redirection(char *command) {
         args[i] = NULL;
 
         execvp(args[0], args);
-        perror("execvp");
+        print_error("Échec de l'exécution de la commande");
         exit(EXIT_FAILURE);
     } else {
         close(fd);
         int status;
-        waitpid(pid, &status, 0);
+        if (waitpid(pid, &status, 0) == -1) {
+            print_error("Échec de l'attente du processus");
+        }
     }
 }
 
@@ -187,7 +195,7 @@ void execute_with_redirection(char *command) {
     //printf("filename: %s\n", filename);
 
     if (!cmd || !filename) {
-        fprintf(stderr, "Erreur de syntaxe pour la redirection `>`\n");
+        print_syntax_error("redirection `>` incorrecte");
         return;
     }
 
@@ -196,13 +204,13 @@ void execute_with_redirection(char *command) {
 
     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd == -1) {
-        perror("open");
+        print_error("Impossible d'ouvrir le fichier en écriture");
         return;
     }
 
     pid_t pid = fork();
     if (pid == -1) {
-        perror("fork");
+        print_error("Échec du fork");
         close(fd);
         return;
     }
@@ -224,12 +232,14 @@ void execute_with_redirection(char *command) {
         args[i] = NULL;
 
         execvp(args[0], args);
-        perror("execvp");
+        print_error("Échec de l'exécution de la commande");
         exit(EXIT_FAILURE);
     } else {
         close(fd);
         int status;
-        waitpid(pid, &status, 0);
+        if (waitpid(pid, &status, 0) == -1) {
+            print_error("Échec de l'attente du processus");
+        }
     }
 
     //printf("Vérification du fichier après exécution...\n");
@@ -250,7 +260,7 @@ void execute_with_pipe(char *command) {
     char *cmd2 = strtok(NULL, "|");
 
     if (!cmd1 || !cmd2) {
-        fprintf(stderr, "Erreur de syntaxe pour le pipe `|`\n");
+        print_syntax_error("pipe `|` incorrect");
         return;
     }
 
@@ -258,19 +268,22 @@ void execute_with_pipe(char *command) {
 
     int pipefd[2];
     if (pipe(pipefd) == -1) {
-        perror("pipe");
+        print_error("Échec de la création du pipe");
         return;
     }
 
     pid_t pid1 = fork();
     if (pid1 == -1) {
-        perror("fork");
+        print_error("Échec du fork");
         return;
     }
 
     if (pid1 == 0) {
         close(pipefd[0]);
-        dup2(pipefd[1], STDOUT_FILENO);
+        if (dup2(pipefd[1], STDOUT_FILENO) == -1) {
+            print_error("Échec de la redirection du stdout vers le pipe");
+            exit(EXIT_FAILURE);
+        }
         close(pipefd[1]);
 
         execute_single_command(cmd1);
@@ -279,13 +292,17 @@ void execute_with_pipe(char *command) {
 
     pid_t pid2 = fork();
     if (pid2 == -1) {
-        perror("fork");
+        print_error("Échec du fork");
         return;
     }
 
     if (pid2 == 0) {
         close(pipefd[1]);
-        dup2(pipefd[0], STDIN_FILENO);
+        if (dup2(pipefd[0], STDIN_FILENO) == -1) {
+            print_error("Échec de la redirection du stdin depuis le pipe");
+            exit(EXIT_FAILURE);
+        }
+        
         close(pipefd[0]);
 
         execute_single_command(cmd2);
@@ -295,8 +312,12 @@ void execute_with_pipe(char *command) {
     close(pipefd[0]);
     close(pipefd[1]);
 
-    waitpid(pid1, NULL, 0);
-    waitpid(pid2, NULL, 0);
+    if (waitpid(pid1, NULL, 0) == -1) {
+        print_error("Échec de l'attente du premier processus");
+    }
+    if (waitpid(pid2, NULL, 0) == -1) {
+        print_error("Échec de l'attente du second processus");
+    }
 }
 
 void execute_with_logical_operators(char *command) {
