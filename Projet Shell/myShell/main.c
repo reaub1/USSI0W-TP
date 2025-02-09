@@ -10,6 +10,9 @@ int main() {
         fflush(stdout);
 
         if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL) {
+            if (ferror(stdin)) {
+                print_error("Erreur de lecture de la commande");
+            }
             printf("\n");
             break;
         }
