@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <errno.h>
 
 void execute_single_command(char *command) {
     char *args[MAX_ARGS];
@@ -24,6 +25,7 @@ void execute_single_command(char *command) {
 
     if (is_builtin_command(args[0])) {
         execute_builtin_command(args);
+        return;
     } 
 
     pid_t pid = fork();
@@ -253,15 +255,56 @@ void execute_with_pipe(char *command) {
     waitpid(pid2, NULL, 0);
 }
 
+void execute_with_logical_operators(char *command) {
+    char *cmd1, *cmd2;
+    int status = 0;
+    pid_t pid;
+
+    if ((cmd1 = strtok(command, "&&"))) {
+        cmd2 = strtok(NULL, "&&");
+
+        pid = fork();
+        if (pid == 0) {
+            execute_command(cmd1);  // Gère aussi les redirections
+            exit(errno); // Récupère l'état de la commande
+        } else {
+            waitpid(pid, &status, 0);
+            if (cmd2 && WEXITSTATUS(status) == 0) {
+                execute_command(cmd2);
+            }
+        }
+        return;
+    }
+
+    if ((cmd1 = strtok(command, "||"))) {
+        cmd2 = strtok(NULL, "||");
+
+        pid = fork();
+        if (pid == 0) {
+            execute_command(cmd1);
+            exit(errno);
+        } else {
+            waitpid(pid, &status, 0);
+            if (cmd2 && WEXITSTATUS(status) != 0) {
+                execute_command(cmd2);
+            }
+        }
+        return;
+    }
+}
+
+
 void execute_command(char *command) {
-    if (strstr(command, " < ")) {
+    if (strstr(command, "&&") || strstr(command, "||")) {
+        execute_with_logical_operators(command);
+    } else if (strstr(command, " | ")) {
+        execute_with_pipe(command);
+    } else if (strstr(command, " < ")) {
         execute_with_input_redirection(command);
     } else if (strstr(command, " >> ")) {
         execute_with_append_redirection(command);
     } else if (strstr(command, " > ")) {
         execute_with_redirection(command);
-    } else if (strstr(command, " | ")) {
-        execute_with_pipe(command);
     } else {
         execute_single_command(command);
     }

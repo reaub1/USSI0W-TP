@@ -4,6 +4,9 @@
 
 void execute_builtin_command(char *args[]) {
     if (strcmp(args[0], "cd") == 0) {
+
+        //printf("args1 : %s\n", args[1]);
+
         if (args[1] == NULL) {
             fprintf(stderr, "cd: missing argument\n");
         } else if (chdir(args[1]) != 0) {
@@ -20,7 +23,6 @@ void execute_builtin_command(char *args[]) {
         for (int i = 1; args[i] != NULL; i++) {
             printf("%s ", args[i]);
         }
-        printf( "End of the echo \n");
     }
     else if (strcmp(args[0], "history") == 0) {
         printf("history command detected\n");
