@@ -26,7 +26,7 @@
 | **CT02** | Définition des structures dans `typedef.h` | ❌ À faire |
 | **CT03** | Séparer les prototypes `.h` et implémentations `.c` | ✅ En place, à affiner |
 | **CT04** | Code documenté avec commentaires | 🚧 En cours |
-| **CT05** | Gestion des erreurs avec `errno` | ❌ À faire |
+| **CT05** | Gestion des erreurs avec `errno` | ✅ Fait |
 | **CTO01** | Documentation avec `doxygen` | ❌ À faire |
 | **CTO02** | Vérification de couverture avec `gcov` | ❌ À faire |
 | **CTO03** | Rédaction d’une page de manuel Linux | ❌ À faire |

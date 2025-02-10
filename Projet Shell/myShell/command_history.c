@@ -24,6 +24,8 @@ char *get_history_path() {
 
     return history_path;
 }
+#include <errno.h>
+#include "utils.h"
 
 void load_command_history() {
     char *history_file = get_history_path();

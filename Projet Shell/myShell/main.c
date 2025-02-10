@@ -1,4 +1,6 @@
 #include "mysh.h"
+#include <errno.h>
+#include "utils.h"
 
 int main(int argc, char *argv[]) {
     char command[MAX_COMMAND_LENGTH];
