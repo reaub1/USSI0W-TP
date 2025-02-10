@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "unistd.h": "c",
+        "mysh.h": "c",
+        "builtin_commands.h": "c",
+        "string.h": "c",
+        "command_history.h": "c"
+    }
+}
