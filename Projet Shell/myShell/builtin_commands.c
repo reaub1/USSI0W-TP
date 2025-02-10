@@ -1,5 +1,7 @@
 #include "builtin_commands.h"
 #include "mysh.h"
+#include "utils.h"
+#include <errno.h>
 #include "command_history.h"
 
 void execute_builtin_command(char *args[]) {
@@ -21,7 +23,7 @@ void execute_builtin_command(char *args[]) {
         }
     } else if (strcmp(args[0], "echo") == 0) {
         for (int i = 1; args[i] != NULL; i++) {
-            printf("%s ", args[i]);
+            printf("%s \n", args[i]);
         }
     }
     else if (strcmp(args[0], "history") == 0) {

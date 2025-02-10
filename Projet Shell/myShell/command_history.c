@@ -1,5 +1,7 @@
 #include "command_history.h"
 #include "mysh.h"
+#include <errno.h>
+#include "utils.h"
 
 void load_command_history() {
     FILE *file = fopen(HISTORY_FILE, "r");

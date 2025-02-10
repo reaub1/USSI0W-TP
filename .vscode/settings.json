@@ -2,6 +2,7 @@
     "files.associations": {
         "unistd.h": "c",
         "mysh.h": "c",
-        "builtin_commands.h": "c"
+        "builtin_commands.h": "c",
+        "execution.h": "c"
     }
 }
