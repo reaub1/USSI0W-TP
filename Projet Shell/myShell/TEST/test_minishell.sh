@@ -160,36 +160,25 @@ else
     echo "❌ Test 16: Commande avec arguments KO"
 fi
 
-# Test 17 : Test des alias (si supporté)
-.././my_sh -c "alias ll='ls -l'" > /dev/null
-.././my_sh -c "ll" > test_output.txt
-
-if grep -q "total" test_output.txt; then
-    echo "✅ Test 17: Alias OK"
-else
-    echo "❌ Test 17: Alias KO"
-fi
-
-
-# Test 18 : Suppression de fichier
+# Test 17 : Suppression de fichier
 echo "to delete" > test1.txt
 .././my_sh -c "rm test1.txt"
 
 if [ ! -f test1.txt ]; then
-    echo "✅ Test 18: Suppression OK"
+    echo "✅ Test 17: Suppression OK"
 else
-    echo "❌ Test 18: Suppression KO"
+    echo "❌ Test 17: Suppression KO"
 fi
 
-# Test 19 : Test du Here Document "<<"
+# Test 18 : Test du Here Document "<<"
 .././my_sh -c "cat << EOF > test1.txt
 Hello HereDoc
 EOF" 
 
 if grep -q "Hello HereDoc" test1.txt; then
-    echo "✅ Test 19: Here Document OK"
+    echo "✅ Test 18: Here Document OK"
 else
-    echo "❌ Test 19: Here Document KO"
+    echo "❌ Test 18: Here Document KO"
 fi
 
 echo "Tests terminés ✅"

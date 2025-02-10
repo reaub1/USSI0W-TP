@@ -41,14 +41,26 @@ void execute_single_command(char *command) {
 
         if (alias_value != NULL) {
             printf("Exécution de l'alias : %s -> %s\n", args[0], alias_value);
-            // Exécuter l'alias
-            execvp(alias_value, args);  // Utilise execvp pour exécuter l'alias
+
+            printf("alias_value : %s\n", alias_value);
+
+            char *alias_args[MAX_ARGS];
+            int j = 0;
+            char *alias_token = strtok(alias_value, " \t");
+            while (alias_token != NULL && j < MAX_ARGS - 1) {
+                alias_args[j++] = alias_token;
+                alias_token = strtok(NULL, " \t");
+            }
+            alias_args[j] = NULL;
+
+            execvp(alias_args[0], alias_args);
+            perror("execvp");  // Affiche l'erreur si execvp échoue
+
         } else {
-            // Si l'alias n'est pas trouvé, on exécute la commande normalement
             if (execvp(args[0], args) == -1) {
-                perror("execvp");  // Affiche l'erreur si execvp échoue
-                printf("Commande introuvable : %s\n", args[0]);  // Affiche un message d'erreur personnalisé
-                exit(EXIT_FAILURE);  // Quitte avec un code d'erreur
+                perror("execvp");
+                printf("Commande introuvable : %s\n", args[0]);
+                exit(EXIT_FAILURE);
             }
         }
     } else {
