@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "unistd.h": "c",
-        "mysh.h": "c"
+        "mysh.h": "c",
+        "builtin_commands.h": "c"
     }
 }

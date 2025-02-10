@@ -12,7 +12,7 @@
 | **FM02.3** | Gérer l’exécution en arrière-plan `&` | ✅ Fait |
 | **FM03** | Implémenter des commandes internes (`cd`, `pwd`, `echo`, `exit`) | ✅ Fait |
 | **FM04** | Sauvegarder l’historique des commandes dans un fichier | ✅ Fait |
-| **FM05** | Ajouter un mode batch (`./my_sh -c "ls -al \| grep toto"`) | ❌ À faire |
+| **FM05** | Ajouter un mode batch (`./my_sh -c "ls -al \| grep toto"`) | ✅ Fait |
 | **FM06** | Gérer des variables d’environnement (`VAR=value`) | ❌ À faire |
 | **FM07** | Ajouter des alias (`alias ll="ls -al"`) | ❌ À faire |
 
@@ -34,6 +34,6 @@
 ## 📝 Notes de développement
 - **Approche incrémentale** : on implémente d’abord la base, puis on ajoute progressivement les fonctionnalités.
 - **Prochaines étapes** :
-  1. Ajouter un mode batch.
-  2. Gérer des variables d’environnement.
-  3. Ajouter des alias.
+  1. Gérer des variables d’environnement.
+  2. Ajouter des alias.
+  3. Définir des structures dans typedef.h.
