@@ -36,10 +36,38 @@ void execute_builtin_command(char *args[]) {
         }
         exit(0);
     }
+    else if (strcmp(args[0], "man") == 0) {
+        if (args[1] == NULL) {
+            print_error("Veuillez spécifier une page de manuel. Essayez 'man my_sh'.");
+            return;
+        }
+        if (strcmp(args[1], "my_sh") == 0) {
+            printf("\n=== Manuel de MyShell ===\n");
+            printf("my_sh - Un mini-shell personnalisé pour exécuter des commandes Unix.\n\n");
+            printf("DESCRIPTION\n");
+            printf("  Un interpréteur de commandes simple, similaire à Bash.\n");
+            printf("  Permet d'exécuter des commandes Unix standard avec redirections et pipes.\n\n");
+            printf("COMMANDES INTERNES\n");
+            printf("  ls               : Affiche le contenu du répertoire courant.\n");
+            printf("  cd [répertoire]  : Change le répertoire courant.\n");
+            printf("  pwd              : Affiche le chemin du répertoire courant.\n");
+            printf("  echo [texte]     : Affiche du texte à l'écran.\n");
+            printf("  history          : Affiche l'historique des commande précédentes.\n");
+            printf("  exit             : Quitte le shell.\n\n");
+            printf("EXEMPLES\n");
+            printf("  my_sh> man my_sh         # Affiche cette aide\n");
+            printf("  my_sh> ls > fichier.txt  # Redirige ls vers un fichier\n\n");
+            return;
+        } else {
+            print_error("Commande man inconnue. Essayez 'man my_sh'.");
+            return;
+        }
+    }
+    
 }
 
 int is_builtin_command(char *command) {
-    char *builtins[] = {"cd", "pwd", "echo", "exit", "history", NULL};
+    char *builtins[] = {"cd", "pwd", "echo", "exit", "history", "man", NULL};
     for (int i = 0; builtins[i] != NULL; i++) {
         if (strcmp(command, builtins[i]) == 0) {
             return 1;
