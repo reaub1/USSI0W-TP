@@ -1,0 +1,13 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_ALIASES 100
+
+typedef struct {
+    char name[50];
+    char value[256];
+} Alias;
+
+Alias alias_list[MAX_ALIASES];
+extern int alias_count;

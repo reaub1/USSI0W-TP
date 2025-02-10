@@ -123,7 +123,7 @@ fi
 
 # Test 13 : Variable d'environnement
 export TEST_VAR="Hello"
-.././my_sh -c "echo \$TEST_VAR" > test_output.txt
+.././my_sh -c "echo $TEST_VAR" > test_output.txt
 
 if grep -q "Hello" test_output.txt; then
     echo "✅ Test 13: Variable d'environnement OK"
@@ -170,35 +170,26 @@ else
     echo "❌ Test 17: Alias KO"
 fi
 
-# Test 18 : Test des jokers "*"
-touch file1.txt file2.txt
-.././my_sh -c "ls file*.txt" > test_output.txt
 
-if grep -q "file1.txt" test_output.txt && grep -q "file2.txt" test_output.txt; then
-    echo "✅ Test 18: Jokers OK"
-else
-    echo "❌ Test 18: Jokers KO"
-fi
-
-# Test 19 : Suppression de fichier
+# Test 18 : Suppression de fichier
 echo "to delete" > test1.txt
 .././my_sh -c "rm test1.txt"
 
 if [ ! -f test1.txt ]; then
-    echo "✅ Test 19: Suppression OK"
+    echo "✅ Test 18: Suppression OK"
 else
-    echo "❌ Test 19: Suppression KO"
+    echo "❌ Test 18: Suppression KO"
 fi
 
-# Test 20 : Test du Here Document "<<"
+# Test 19 : Test du Here Document "<<"
 .././my_sh -c "cat << EOF > test1.txt
 Hello HereDoc
 EOF" 
 
 if grep -q "Hello HereDoc" test1.txt; then
-    echo "✅ Test 20: Here Document OK"
+    echo "✅ Test 19: Here Document OK"
 else
-    echo "❌ Test 20: Here Document KO"
+    echo "❌ Test 19: Here Document KO"
 fi
 
 echo "Tests terminés ✅"

@@ -4,6 +4,8 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <errno.h>
+#include "builtin_commands.h"
+
 
 void execute_single_command(char *command) {
     char *args[MAX_ARGS];
@@ -34,16 +36,21 @@ void execute_single_command(char *command) {
         return;
     }
 
-    //check if the command exist
-     
-    
-
     if (pid == 0) {
-        execvp(args[0], args);
-        
-        perror("execvp");
-        printf("Commande introuvable\n");
-        exit(EXIT_FAILURE);
+        char *alias_value = get_alias_value(args[0]);
+
+        if (alias_value != NULL) {
+            printf("Exécution de l'alias : %s -> %s\n", args[0], alias_value);
+            // Exécuter l'alias
+            execvp(alias_value, args);  // Utilise execvp pour exécuter l'alias
+        } else {
+            // Si l'alias n'est pas trouvé, on exécute la commande normalement
+            if (execvp(args[0], args) == -1) {
+                perror("execvp");  // Affiche l'erreur si execvp échoue
+                printf("Commande introuvable : %s\n", args[0]);  // Affiche un message d'erreur personnalisé
+                exit(EXIT_FAILURE);  // Quitte avec un code d'erreur
+            }
+        }
     } else {
         if (!background) {
             int status;

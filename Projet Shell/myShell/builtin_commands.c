@@ -2,7 +2,129 @@
 #include "mysh.h"
 #include "command_history.h"
 
+int alias_count = 0;
+
+void show_aliases() {
+    for (int i = 0; i < alias_count; i++) {
+        printf("%s='%s'\n", alias_list[i].name, alias_list[i].value);
+    }
+}
+
+void remove_alias(char *name) {
+    for (int i = 0; i < alias_count; i++) {
+        if (strcmp(alias_list[i].name, name) == 0) {
+            for (int j = i; j < alias_count - 1; j++) {
+                alias_list[j] = alias_list[j + 1];
+            }
+            alias_count--;
+            return;
+        }
+    }
+    printf("Alias introuvable : %s\n", name);
+}
+
+char *get_alias_value(char *name) {
+    for (int i = 0; i < alias_count; i++) {
+        if (strcmp(alias_list[i].name, name) == 0) {
+            return alias_list[i].value;
+        }
+    }
+    return NULL;
+}
+
+void add_alias(char *name, char *value) {
+
+    //printf("add_alias\n");
+
+    if (alias_count >= MAX_ALIASES) {
+        printf("Nombre maximal d'alias atteint !\n");
+        return;
+    }
+    for (int i = 0; i < alias_count; i++) {
+        if (strcmp(alias_list[i].name, name) == 0) {
+           
+
+
+            strcpy(alias_list[i].value, value);
+            return;
+        }
+    }
+    // Ajout d'un nouvel alias
+    // Mise à jour si l'alias existe déjà
+            //printf("Mise à jour de l'alias %s\n", name);
+            
+            //printf("name : %s\n", name);
+            //printf("value : %s\n", value);
+
+    strcpy(alias_list[alias_count].name, name);
+    strcpy(alias_list[alias_count].value, value);
+    alias_count++;
+}
+
+
 void execute_builtin_command(char *args[]) {
+    if (strcmp(args[0], "alias") == 0) {
+        //printf("alias detected : %s\n", args[0]);
+        if (args[1] == NULL) {
+            show_aliases();
+        } else {
+             char *equal_pos = strchr(args[1], '=');
+            if (!equal_pos) {
+                printf("Usage: alias name='command'\n");
+                return;
+            }
+
+            // Extraire `name`
+            *equal_pos = '\0';  
+            char *name = args[1];
+
+            // Stocker `value` dans un buffer sécurisé
+            char value[1024] = {0};  
+            snprintf(value, sizeof(value), "%s", equal_pos + 1); 
+
+            // Concaténer `args[2]`, `args[3]`, etc.
+            for (int i = 2; args[i] != NULL; i++) {
+                strncat(value, " ", sizeof(value) - strlen(value) - 1);
+                strncat(value, args[i], sizeof(value) - strlen(value) - 1);
+            }
+
+            // Suppression des guillemets si présents
+            size_t len = strlen(value);
+            if (len > 1 && value[0] == '"' && value[len - 1] == '"') {
+                memmove(value, value + 1, len - 2);
+                value[len - 2] = '\0';
+            }
+
+            if (name[0] != '\0' && value[0] != '\0') {
+                add_alias(name, value);
+            } else {
+                printf("Erreur : alias invalide\n");
+            }
+        }
+    } else if (strcmp(args[0], "unalias") == 0) {
+        if (args[1] == NULL) {
+            printf("Usage: unalias nom\n");
+        } else {
+            remove_alias(args[1]);
+        }
+    } else  {
+        // Vérifie si la commande est un alias avant exécution
+        char *alias_value = get_alias_value(args[0]);
+        if (alias_value) {
+            printf("Exécution de l'alias : %s -> %s\n", args[0], alias_value);
+
+            // try with a formal execvp
+            //
+            char *args[] = {"world"};
+            //
+            execvp("echo",args);    
+
+            //execvp(alias_value, args);
+        } else {
+            // Exécuter normalement
+            execvp(args[0], args);
+        }
+    }
     if (strcmp(args[0], "cd") == 0) {
 
         //printf("args1 : %s\n", args[1]);
@@ -34,7 +156,7 @@ void execute_builtin_command(char *args[]) {
 }
 
 int is_builtin_command(char *command) {
-    char *builtins[] = {"cd", "pwd", "echo", "exit", "history", NULL};
+    char *builtins[] = {"cd", "pwd", "echo", "exit", "history","alias", NULL};
     for (int i = 0; builtins[i] != NULL; i++) {
         if (strcmp(command, builtins[i]) == 0) {
             return 1;
