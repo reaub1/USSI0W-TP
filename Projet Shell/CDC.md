@@ -28,8 +28,8 @@
 | **CT04** | Code documenté avec commentaires | 🚧 En cours |
 | **CT05** | Gestion des erreurs avec `errno` | ✅ Fait |
 | **CTO01** | Documentation avec `doxygen` | ❌ À faire |
-| **CTO02** | Vérification de couverture avec `gcov` | ❌ À faire |
-| **CTO03** | Rédaction d’une page de manuel Linux | ❌ À faire |
+| **CTO02** | Vérification de couverture avec `gcov` | ✅ Fait
+| **CTO03** | Rédaction d’une page de manuel Linux | 🚧 En cours |
 
 ## 📝 Notes de développement
 - **Approche incrémentale** : on implémente d’abord la base, puis on ajoute progressivement les fonctionnalités.
