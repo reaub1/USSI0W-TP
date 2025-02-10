@@ -34,9 +34,15 @@ void execute_single_command(char *command) {
         return;
     }
 
+    //check if the command exist
+     
+    
+
     if (pid == 0) {
         execvp(args[0], args);
+        
         perror("execvp");
+        printf("Commande introuvable\n");
         exit(EXIT_FAILURE);
     } else {
         if (!background) {
@@ -315,4 +321,5 @@ void execute_command(char *command) {
     } else {
         execute_single_command(command);
     }
+    save_command_to_history(command);
 }

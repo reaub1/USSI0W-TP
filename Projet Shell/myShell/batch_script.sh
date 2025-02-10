@@ -1,1 +1,0 @@
-echo 'Batch Test'

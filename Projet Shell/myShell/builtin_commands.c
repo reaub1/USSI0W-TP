@@ -25,7 +25,7 @@ void execute_builtin_command(char *args[]) {
         }
     }
     else if (strcmp(args[0], "history") == 0) {
-        printf("history command detected\n");
+        //printf("history command detected\n");
         show_history();
     }
     else if (strcmp(args[0], "exit") == 0) {

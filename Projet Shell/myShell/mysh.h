@@ -11,7 +11,7 @@
 
 #define MAX_ARGS 100
 #define MAX_COMMAND_LENGTH 1024
-#define HISTORY_FILE ".mysh_history"
+#define HISTORY_FILE "/.mysh_history"
 
 void handle_sigchld();
 void execute_command(char *command);

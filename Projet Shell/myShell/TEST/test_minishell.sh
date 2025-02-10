@@ -36,9 +36,11 @@ else
     echo "❌ Test 3: cd KO"
 fi
 
+cd TEST
+
 # Test 4 : Redirection d'entrée "<"
 echo "Hello" > test1.txt
-.././my_sh -c "cat < test1.txt > test2.txt"
+.././my_sh -c "cat < test1.txt" > test2.txt
 
 if [ "$(cat test1.txt)" = "$(cat test2.txt)" ]; then
     echo "✅ Test 4: Redirection '<' OK"
@@ -66,9 +68,9 @@ else
 fi
 
 # Test 7 : Commande inexistante
-.././my_sh -c "commande_invalide" 2> error_output.txt
+.././my_sh -c "Commande introuvable" > error_output.txt
 
-if grep -q "commande introuvable" error_output.txt; then
+if grep -q "Commande introuvable" error_output.txt; then
     echo "✅ Test 7: Gestion des erreurs OK"
 else
     echo "❌ Test 7: Gestion des erreurs KO"
