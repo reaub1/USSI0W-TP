@@ -2,3 +2,4 @@
 *.o
 *.txt
 my_sh
+.DS_Store
