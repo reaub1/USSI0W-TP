@@ -157,6 +157,10 @@ void execute_with_redirection(char *command) {
     char *cmd = strtok(command, ">");
     char *filename = strtok(NULL, ">");
 
+    //printf("redirection\n");
+    //printf("cmd: %s\n", cmd);
+    //printf("filename: %s\n", filename);
+
     if (!cmd || !filename) {
         fprintf(stderr, "Erreur de syntaxe pour la redirection `>`\n");
         return;
@@ -179,7 +183,10 @@ void execute_with_redirection(char *command) {
     }
 
     if (pid == 0) {
-        dup2(fd, STDOUT_FILENO);
+        if (dup2(fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            exit(EXIT_FAILURE);
+        }
         close(fd);
 
         char *args[MAX_ARGS];
@@ -198,6 +205,18 @@ void execute_with_redirection(char *command) {
         close(fd);
         int status;
         waitpid(pid, &status, 0);
+    }
+
+    //printf("Vérification du fichier après exécution...\n");
+    char buffer[1024];
+    FILE *file = fopen(filename, "r");
+    if (file) {
+        while (fgets(buffer, sizeof(buffer), file)) {
+            //printf("%s", buffer);
+        }
+        fclose(file);
+    } else {
+        perror("fopen");
     }
 }
 
@@ -257,39 +276,27 @@ void execute_with_pipe(char *command) {
 
 void execute_with_logical_operators(char *command) {
     char *cmd1, *cmd2;
-    int status = 0;
-    pid_t pid;
 
     if ((cmd1 = strtok(command, "&&"))) {
         cmd2 = strtok(NULL, "&&");
 
-        pid = fork();
-        if (pid == 0) {
-            execute_command(cmd1);  // Gère aussi les redirections
-            exit(errno); // Récupère l'état de la commande
-        } else {
-            waitpid(pid, &status, 0);
-            if (cmd2 && WEXITSTATUS(status) == 0) {
-                execute_command(cmd2);
-            }
+        //printf("cmd1: %s\n", cmd1);
+        //printf("cmd2: %s\n", cmd2);
+
+        execute_command(cmd1);
+        if (cmd2) {
+            execute_command(cmd2);
         }
-        return;
+        return; 
     }
 
     if ((cmd1 = strtok(command, "||"))) {
         cmd2 = strtok(NULL, "||");
 
-        pid = fork();
-        if (pid == 0) {
-            execute_command(cmd1);
-            exit(errno);
-        } else {
-            waitpid(pid, &status, 0);
-            if (cmd2 && WEXITSTATUS(status) != 0) {
-                execute_command(cmd2);
-            }
+        execute_command(cmd1);
+        if (cmd2) {
+            execute_command(cmd2);
         }
-        return;
     }
 }
 

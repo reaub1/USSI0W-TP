@@ -25,11 +25,14 @@ else
 fi
 
 # Test 3 : Built-in cd
-.././my_sh -c "cd .. && pwd > testCD.txt"
+.././my_sh -c "cd .. && pwd > test2.txt"
 
-if [ "$(cd .. && pwd)" = "$(cat testCD.txt)" ]; then
+if [ "$(cd .. && pwd)" = "$(cat ../test2.txt)" ]; then
     echo "✅ Test 3: cd OK"
 else
+    echo "Value of $(cd .. && pwd)" | od -c
+    echo "Value of $(cat ../test2.txt)" | od -c
+
     echo "❌ Test 3: cd KO"
 fi
 
