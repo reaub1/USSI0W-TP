@@ -38,7 +38,7 @@ Une fois le shell testé, récupérer les données de couverture avec :
 
 ###  Commande à exécuter :
 ```sh
-lcov --capture --directory coverage --output-file coverage.info --ignore-errors inconsistent
+lcov --capture --directory coverage --output-file coverage.info --ignore-errors inconsistent,corrupt
 ```
  Cette commande génère un fichier `coverage.info` contenant le pourcentage de code exécuté.
 
@@ -60,23 +60,13 @@ Ouvrir le rapport de couverture dans un navigateur :
 
 ###  Commande à exécuter :
 ```sh
-open coverage_report/index.html  # (macOS)
-xdg-open coverage_report/index.html  # (Linux)
+open coverage_report/index.html # (macOS)
+xdg-open coverage_report/index.html # (Linux)
 ```
  Cela ouvre une page montrant les parties du code exécutées (vert) et non exécutées (rouge).
 
 ---
 
-##  6️⃣ Nettoyage des fichiers de couverture
-Pour supprimer les fichiers temporaires et recommencer une nouvelle analyse :
-
-###  Commande à exécuter :
-```sh
-make clean-coverage
-```
- Cette commande supprime tous les fichiers de couverture (`coverage/`, `coverage_report/`, `coverage.info`).
-
----
 
 ## Résumé des actions à effectuer
 | **Action** | **Commande** |
@@ -86,7 +76,5 @@ make clean-coverage
 | **Collecte des données** | `lcov --capture --directory coverage --output-file coverage.info --ignore-errors inconsistent` |
 | **Génération du rapport HTML** | `genhtml coverage.info --output-directory coverage_report --ignore-errors inconsistent,corrupt` |
 | **Visualisation du rapport** | `open coverage_report/index.html` |
-| **Nettoyage des fichiers de couverture** | `make clean-coverage` |
-
 ---
 

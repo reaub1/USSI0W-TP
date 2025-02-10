@@ -1,9 +1,8 @@
 NAME = my_sh
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
-CFLAGS = -Wall -Wextra -Werror -arch x86_64
-CFLAGS = -Wall -Wextra -Werror -fprofile-arcs -ftest-coverage -O0 -fprofile-dir=coverage/
+CFLAGS = -Wall -Wextra -Werror -g -arch x86_64 -fprofile-arcs -ftest-coverage -O0
+
 LDFLAGS = -lgcov --coverage
 
 
@@ -12,14 +11,15 @@ OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+$(NAME): $(OBJS:%.o=coverage/%.o)
+	$(CC) $(CFLAGS) $^ -o $(NAME)
 
-%.o: %.c
+coverage/%.o: %.c | coverage
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
+	rm -rf coverage coverage_report coverage.info
 
 fclean: clean
 	rm -f $(NAME)
@@ -29,7 +29,7 @@ coverage:
 
 clean-coverage:
 	rm -rf coverage coverage_report coverage.info
-	
+
 re: fclean all
 
 .PHONY: all clean fclean re
