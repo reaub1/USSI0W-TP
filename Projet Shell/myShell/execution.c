@@ -28,6 +28,7 @@ void execute_single_command(char *command) {
     if (args[0] == NULL) return;
 
     if (is_builtin_command(args[0])) {
+        //printf("Commande intégrée : %s\n", args[0]);
         execute_builtin_command(args);
         return;
     } 

@@ -109,24 +109,7 @@ void execute_builtin_command(char *args[]) {
         } else {
             remove_alias(args[1]);
         }
-    } else  {
-        // Vérifie si la commande est un alias avant exécution
-        char *alias_value = get_alias_value(args[0]);
-        if (alias_value) {
-            printf("Exécution de l'alias : %s -> %s\n", args[0], alias_value);
-
-            // try with a formal execvp
-            //
-            char *args[] = {"world"};
-            //
-            execvp("echo",args);    
-
-            //execvp(alias_value, args);
-        } else {
-            // Exécuter normalement
-            execvp(args[0], args);
-        }
-    }
+    } 
     if (strcmp(args[0], "cd") == 0) {
 
         //printf("args1 : %s\n", args[1]);
