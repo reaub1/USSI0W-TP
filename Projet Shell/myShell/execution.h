@@ -1,3 +1,10 @@
+/**
+ * @file execution.h
+ * @brief Header des méthodes d'éxécutions des commandes
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #ifndef EXECUTION_H
 #define EXECUTION_H
 

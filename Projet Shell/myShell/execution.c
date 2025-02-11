@@ -1,3 +1,10 @@
+/**
+ * @file execution.c
+ * @brief Implémentation des méthodes d'éxécutions des commandes
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #include "execution.h"
 #include "mysh.h"
 #include <sys/types.h>
@@ -9,6 +16,11 @@
 #include <errno.h>
 #include "utils.h"
 
+/**
+ * @brief Exectution d'une commande simple
+ * @param command commande à exécuter
+ * @return void
+ */
 void execute_single_command(char *command) {
     char *args[MAX_ARGS];
     int i = 0;
@@ -78,6 +90,11 @@ void execute_single_command(char *command) {
     }
 }
 
+/**
+ * @brief Exectution d'une commande avec redirection d'entrée
+ * @param command commande à exécuter
+ * @return void
+ */
 void execute_with_input_redirection(char *command) {
     char *cmd = strtok(command, "<");
     char *filename = strtok(NULL, "<");
@@ -137,6 +154,11 @@ void execute_with_input_redirection(char *command) {
     }
 }
 
+/**
+ * @brief Exectution d'une commande avec redirection de sortie en ajoutant le contenu
+ * @param command commande à exécuter
+ * @return void
+ */
 void execute_with_append_redirection(char *command) {
     char *cmd = strtok(command, ">>");
     char *filename = strtok(NULL, ">>");
@@ -187,6 +209,11 @@ void execute_with_append_redirection(char *command) {
     }
 }
 
+/**
+ * @brief Exectution d'une commande avec redirection de sortie
+ * @param command commande à exécuter
+ * @return void
+ */
 void execute_with_redirection(char *command) {
     char *cmd = strtok(command, ">");
     char *filename = strtok(NULL, ">");
@@ -256,6 +283,11 @@ void execute_with_redirection(char *command) {
     }
 }
 
+/**
+ * @brief Exectution d'une commande avec un pipe
+ * @param command commande à exécuter
+ * @return void
+ */
 void execute_with_pipe(char *command) {
     char *cmd1 = strtok(command, "|");
     char *cmd2 = strtok(NULL, "|");
@@ -321,6 +353,11 @@ void execute_with_pipe(char *command) {
     }
 }
 
+/**
+ * @brief Exectution d'une commande avec opérateurs logiques
+ * @param command commande à exécuter
+ * @return void
+ */
 void execute_with_logical_operators(char *command) {
     char *cmd1, *cmd2;
 
@@ -347,7 +384,11 @@ void execute_with_logical_operators(char *command) {
     }
 }
 
-
+/**
+ * @brief Exectution d'une commande
+ * @param command commande à exécuter
+ * @return void
+ */
 void execute_command(char *command) {
     if (strstr(command, "&&") || strstr(command, "||")) {
         execute_with_logical_operators(command);

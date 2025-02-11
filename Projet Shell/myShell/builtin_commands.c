@@ -1,3 +1,10 @@
+/**
+ * @file builtin_commands.c
+ * @brief Implémentation des commandes intégrées
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #include "builtin_commands.h"
 #include "mysh.h"
 #include "utils.h"
@@ -6,11 +13,22 @@
 
 int alias_count = 0;
 
+
+/**
+ * @brief Affiche la liste des alias
+ * @param void
+ */
 void show_aliases() {
     for (int i = 0; i < alias_count; i++) {
         printf("%s='%s'\n", alias_list[i].name, alias_list[i].value);
     }
 }
+
+/**
+ * @brief Supprimer un allias
+ * @param name nom de l'allias
+ * @return void
+ */
 
 void remove_alias(char *name) {
     for (int i = 0; i < alias_count; i++) {
@@ -25,6 +43,11 @@ void remove_alias(char *name) {
     printf("Alias introuvable : %s\n", name);
 }
 
+/**
+ * @brief Retourne la valeur de l'alias
+ * @param name nom de l'allias
+ * @return char valeur de l'allias
+ */
 char *get_alias_value(char *name) {
     for (int i = 0; i < alias_count; i++) {
         if (strcmp(alias_list[i].name, name) == 0) {
@@ -34,6 +57,12 @@ char *get_alias_value(char *name) {
     return NULL;
 }
 
+/**
+ * @brief Création d'un alias
+ * @param name nom de l'allias
+ * @param value valeur de l'allias
+ * @return void
+ */
 void add_alias(char *name, char *value) {
 
     //printf("add_alias\n");
@@ -63,7 +92,11 @@ void add_alias(char *name, char *value) {
     alias_count++;
 }
 
-
+/**
+ * @brief Exectution des commandes intégrées
+ * @param args tableau des arguments
+ * @return void
+ */
 void execute_builtin_command(char *args[]) {
     if (strcmp(args[0], "alias") == 0) {
         //printf("alias detected : %s\n", args[0]);
@@ -171,6 +204,11 @@ void execute_builtin_command(char *args[]) {
     
 }
 
+/**
+ * @brief Vérifie si la commande est intégrée
+ * @param command commande à vérifier
+ * @return int 1 si la commande est intégrée, 0 sinon
+ */
 int is_builtin_command(char *command) {
     char *builtins[] = {"cd", "pwd", "echo", "exit", "history", "man","alias", NULL};
     for (int i = 0; builtins[i] != NULL; i++) {

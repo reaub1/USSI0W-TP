@@ -1,0 +1,154 @@
+\doxysection{builtin\+\_\+commands.\+c File Reference}
+\hypertarget{builtin__commands_8c}{}\label{builtin__commands_8c}\index{builtin\_commands.c@{builtin\_commands.c}}
+
+
+Implémentation des commandes intégrées.  
+
+
+{\ttfamily \#include "{}builtin\+\_\+commands.\+h"{}}\newline
+{\ttfamily \#include "{}mysh.\+h"{}}\newline
+{\ttfamily \#include "{}utils.\+h"{}}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include "{}command\+\_\+history.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{builtin__commands_8c_a01f0cf8263b05e5ed73f0f544494c821}{show\+\_\+aliases}} ()
+\begin{DoxyCompactList}\small\item\em Affiche la liste des alias. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{builtin__commands_8c_a5ac0c41d0bb09bcb8fa3c3ecbb44981b}{remove\+\_\+alias}} (char \texorpdfstring{$\ast$}{*}name)
+\begin{DoxyCompactList}\small\item\em Supprimer un allias. \end{DoxyCompactList}\item 
+char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{builtin__commands_8c_a38b8c76a7f3b1b167493c7e91b67b617}{get\+\_\+alias\+\_\+value}} (char \texorpdfstring{$\ast$}{*}name)
+\begin{DoxyCompactList}\small\item\em Retourne la valeur de l\textquotesingle{}alias. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{builtin__commands_8c_a2a7bb793d1eac9a3cdfe66c7357fd460}{add\+\_\+alias}} (char \texorpdfstring{$\ast$}{*}name, char \texorpdfstring{$\ast$}{*}value)
+\begin{DoxyCompactList}\small\item\em Création d\textquotesingle{}un alias. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{builtin__commands_8c_a6f15274228420def2fea3c944309012b}{execute\+\_\+builtin\+\_\+command}} (char \texorpdfstring{$\ast$}{*}args\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Exectution des commandes intégrées. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{builtin__commands_8c_a1e698d2178d5c4b62c7a3c038ee5b4db}{is\+\_\+builtin\+\_\+command}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Vérifie si la commande est intégrée. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{builtin__commands_8c_a5045df91023ab10fefbbbc90084c46fd}\label{builtin__commands_8c_a5045df91023ab10fefbbbc90084c46fd} 
+int {\bfseries alias\+\_\+count} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implémentation des commandes intégrées. 
+
+\begin{DoxyAuthor}{Author}
+PICHON Sébastien, BECHLEM Robin 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/02-\/11 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{builtin__commands_8c_a2a7bb793d1eac9a3cdfe66c7357fd460}\index{builtin\_commands.c@{builtin\_commands.c}!add\_alias@{add\_alias}}
+\index{add\_alias@{add\_alias}!builtin\_commands.c@{builtin\_commands.c}}
+\doxysubsubsection{\texorpdfstring{add\_alias()}{add\_alias()}}
+{\footnotesize\ttfamily \label{builtin__commands_8c_a2a7bb793d1eac9a3cdfe66c7357fd460} 
+void add\+\_\+alias (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{name}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Création d\textquotesingle{}un alias. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & nom de l\textquotesingle{}allias \\
+\hline
+{\em value} & valeur de l\textquotesingle{}allias \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{builtin__commands_8c_a6f15274228420def2fea3c944309012b}\index{builtin\_commands.c@{builtin\_commands.c}!execute\_builtin\_command@{execute\_builtin\_command}}
+\index{execute\_builtin\_command@{execute\_builtin\_command}!builtin\_commands.c@{builtin\_commands.c}}
+\doxysubsubsection{\texorpdfstring{execute\_builtin\_command()}{execute\_builtin\_command()}}
+{\footnotesize\ttfamily \label{builtin__commands_8c_a6f15274228420def2fea3c944309012b} 
+void execute\+\_\+builtin\+\_\+command (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{args}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Exectution des commandes intégrées. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & tableau des arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{builtin__commands_8c_a38b8c76a7f3b1b167493c7e91b67b617}\index{builtin\_commands.c@{builtin\_commands.c}!get\_alias\_value@{get\_alias\_value}}
+\index{get\_alias\_value@{get\_alias\_value}!builtin\_commands.c@{builtin\_commands.c}}
+\doxysubsubsection{\texorpdfstring{get\_alias\_value()}{get\_alias\_value()}}
+{\footnotesize\ttfamily \label{builtin__commands_8c_a38b8c76a7f3b1b167493c7e91b67b617} 
+char \texorpdfstring{$\ast$}{*} get\+\_\+alias\+\_\+value (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{name}{}\end{DoxyParamCaption})}
+
+
+
+Retourne la valeur de l\textquotesingle{}alias. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & nom de l\textquotesingle{}allias \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+char valeur de l\textquotesingle{}allias 
+\end{DoxyReturn}
+\Hypertarget{builtin__commands_8c_a1e698d2178d5c4b62c7a3c038ee5b4db}\index{builtin\_commands.c@{builtin\_commands.c}!is\_builtin\_command@{is\_builtin\_command}}
+\index{is\_builtin\_command@{is\_builtin\_command}!builtin\_commands.c@{builtin\_commands.c}}
+\doxysubsubsection{\texorpdfstring{is\_builtin\_command()}{is\_builtin\_command()}}
+{\footnotesize\ttfamily \label{builtin__commands_8c_a1e698d2178d5c4b62c7a3c038ee5b4db} 
+int is\+\_\+builtin\+\_\+command (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Vérifie si la commande est intégrée. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à vérifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 1 si la commande est intégrée, 0 sinon 
+\end{DoxyReturn}
+\Hypertarget{builtin__commands_8c_a5ac0c41d0bb09bcb8fa3c3ecbb44981b}\index{builtin\_commands.c@{builtin\_commands.c}!remove\_alias@{remove\_alias}}
+\index{remove\_alias@{remove\_alias}!builtin\_commands.c@{builtin\_commands.c}}
+\doxysubsubsection{\texorpdfstring{remove\_alias()}{remove\_alias()}}
+{\footnotesize\ttfamily \label{builtin__commands_8c_a5ac0c41d0bb09bcb8fa3c3ecbb44981b} 
+void remove\+\_\+alias (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{name}{}\end{DoxyParamCaption})}
+
+
+
+Supprimer un allias. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & nom de l\textquotesingle{}allias \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{builtin__commands_8c_a01f0cf8263b05e5ed73f0f544494c821}\index{builtin\_commands.c@{builtin\_commands.c}!show\_aliases@{show\_aliases}}
+\index{show\_aliases@{show\_aliases}!builtin\_commands.c@{builtin\_commands.c}}
+\doxysubsubsection{\texorpdfstring{show\_aliases()}{show\_aliases()}}
+{\footnotesize\ttfamily \label{builtin__commands_8c_a01f0cf8263b05e5ed73f0f544494c821} 
+void show\+\_\+aliases (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Affiche la liste des alias. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}

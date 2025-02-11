@@ -1,3 +1,10 @@
+/**
+ * @file main.c
+ * @brief Implémentation du main du shell
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #include "mysh.h"
 #include <errno.h>
 #include "utils.h"

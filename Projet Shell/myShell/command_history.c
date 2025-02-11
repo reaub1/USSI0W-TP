@@ -1,3 +1,10 @@
+/**
+ * @file command_history.c
+ * @brief Implémentation de la commande history
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #include "command_history.h"
 #include "mysh.h"
 #include <stdio.h>
@@ -5,7 +12,10 @@
 #include <string.h>
 #include <unistd.h>
 
-
+/**
+ * @brief Retourne le chemin du fichier d'historique
+ * @return char* chemin du fichier d'historique
+ */
 char *get_history_path() {
     char *home = getenv("HOME");
     if (!home) {
@@ -27,6 +37,10 @@ char *get_history_path() {
 #include <errno.h>
 #include "utils.h"
 
+/**
+ * @brief Charge l'historique des commandes depuis le fichier
+ * @return void
+ */
 void load_command_history() {
     char *history_file = get_history_path();
     if (!history_file) return;
@@ -48,6 +62,11 @@ void load_command_history() {
     }
 }
 
+/**
+ * @brief Sauvegarde une commande dans l'historique
+ * @param command commande à sauvegarder
+ * @return void
+ */
 void save_command_to_history(const char *command) {
     char *history_file = get_history_path();
     if (!history_file) return;
@@ -73,6 +92,10 @@ void save_command_to_history(const char *command) {
     free(history_file);
 }
 
+/**
+ * @brief Affiche l'historique des commandes
+ * @return void
+ */
 void show_history() {
     char *history_file = get_history_path();
     if (!history_file) return;

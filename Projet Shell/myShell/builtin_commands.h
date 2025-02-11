@@ -1,3 +1,10 @@
+/**
+ * @file builtin_commands.h
+ * @brief Header des commandes intégrées
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #ifndef BUILTIN_COMMANDS_H
 #define BUILTIN_COMMANDS_H
 

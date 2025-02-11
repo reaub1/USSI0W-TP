@@ -1,3 +1,10 @@
+/**
+ * @file mysh.h
+ * @brief Header du shell
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #ifndef MYSH_H
 #define MYSH_H
 
