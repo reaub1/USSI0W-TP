@@ -1,34 +1,36 @@
-# Documentation - command\_history.c
+# Documentation : command_history.c
 
-##  Description
+## Description
+Ce fichier implémente la gestion de l'historique des commandes pour le shell. Il permet de sauvegarder, charger et afficher l'historique des commandes exécutées par l'utilisateur.
 
-Le fichier `command_history.c` gère l'historique des commandes saisies par l'utilisateur.
+## Fonctions principales
 
-##  Fonctions principales
+### `char *get_history_path()`
+- **Rôle** : Retourne le chemin du fichier d'historique.
+- **Fonctionnement** : Récupère la variable d'environnement `HOME` et concatène avec le nom du fichier d'historique.
+- **Gestion des erreurs** : Retourne `NULL` si `HOME` n'est pas défini ou en cas d'échec d'allocation mémoire.
 
-### 1️⃣ `void load_command_history()`
+### `void load_command_history()`
+- **Rôle** : Charge l'historique des commandes depuis un fichier.
+- **Fonctionnement** : Lit le fichier d'historique ligne par ligne et stocke les commandes.
+- **Gestion des erreurs** : Vérifie l'existence du fichier et gère les erreurs d'ouverture et de lecture.
 
-- **Rôle :** Charge l'historique des commandes depuis un fichier.
-- **Gestion des erreurs :** Vérifie si `fopen()` échoue et affiche une erreur avec `print_error()`.
+### `void save_command_to_history(const char *command)`
+- **Rôle** : Sauvegarde une commande dans le fichier d'historique.
+- **Fonctionnement** : Ajoute la commande au fichier d'historique en mode `append`.
+- **Gestion des erreurs** : Vérifie si le fichier peut être ouvert et écrit correctement.
 
-### 2️⃣ `void save_command_to_history(const char *command)`
+### `void show_history()`
+- **Rôle** : Affiche l'historique des commandes exécutées.
+- **Fonctionnement** : Lit le fichier et affiche chaque commande avec son index.
+- **Gestion des erreurs** : Affiche un message si aucun historique n'est disponible.
 
-- **Rôle :** Ajoute une commande à l'historique et l'enregistre dans un fichier.
-- **Gestion des erreurs :** Vérifie si `fopen()` ou `fprintf()` échoue.
-
-### 3️⃣ `void show_history()`
-
-- **Rôle :** Affiche l'historique des commandes enregistrées.
-- **Gestion des erreurs :** Vérifie si `fopen()` échoue.
-
-##  Variables principales
-
-- `FILE *file` : Pointeur de fichier utilisé pour lire/écrire l'historique.
-- `char line[1024]` : Stocke temporairement chaque ligne de l'historique.
+## Variables principales
+- `HISTORY_FILE` : Définit le chemin relatif du fichier d'historique.
 
 ##  Exemple d'utilisation
 
-```
+```sh
 my_sh> ls
 my_sh> history
 1 ls
@@ -43,5 +45,3 @@ my_sh> history
 - `fopen()` vérifié pour éviter les erreurs d'accès au fichier.
 - `fclose()` est également vérifié pour éviter les fichiers corrompus.
 ---
-
-

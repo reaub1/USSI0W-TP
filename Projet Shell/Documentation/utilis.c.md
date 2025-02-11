@@ -5,7 +5,7 @@ Le fichier `utils.c` fournit des fonctions utilitaires pour la gestion des erreu
 
 ##  Fonctions principales
 
-### 1️⃣ `void print_error(const char *msg)`
+### `void print_error(const char *msg)`
 - **Rôle :** Affiche un message d'erreur standard basé sur `errno`.
 - **Utilisation :** Appelée après un échec d'une fonction système (`open()`, `fork()`, etc.).
 - **Exemple :**
@@ -15,7 +15,13 @@ if (fork() == -1) {
 }
 ```
 
-### 2️⃣ `void handle_sigchld()`
+### `void print_syntax_error(const char *msg)`
+
+- **Rôle :** Affiche un message d'erreur de syntaxe.
+
+- **Fonctionnement :** Affiche simplement un message sous le format "Erreur de syntaxe : ".
+
+### `void handle_sigchld()`
 - **Rôle :** Gère les processus zombies en utilisant `waitpid()` avec `WNOHANG`.
 - **Gestion des erreurs :** Vérifie si `errno` est différent de `ECHILD`.
 
@@ -27,12 +33,10 @@ if (fork() == -1) {
 ```
 my_sh> ls fichier_inexistant
 Erreur : ls - No such file or directory
-my_sh> ./script.sh
-Erreur : execvp - Permission denied
+my_sh> sezzd
+ERR : Échec de l'exécution de la commande - No such file or directory
+Commande introuvable : sezzd
 ```
 
-##  Gestion des erreurs
-Toutes les erreurs critiques sont affichées via `print_error()`.
----
 
 

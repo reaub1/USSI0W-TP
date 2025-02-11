@@ -1,32 +1,32 @@
-# Documentation - main.c
+# Documentation : main.c
 
-##  Description
-Le fichier `main.c` est le point d'entrée du mini-shell. Il gère la boucle principale du programme et l'exécution des commandes.
+## Description
+Ce fichier contient le point d'entrée principal du shell. Il gère l'initialisation, la boucle d'attente des commandes et leur exécution.
 
-##  Fonctions principales
+## Fonctions principales
 
-### 1️⃣ `int main()`
-- **Rôle :** Initialise le shell, gère l'affichage du prompt, et traite les commandes saisies.
-- **Étapes :**
-  1. Affiche `my_sh>`
-  2. Lit l'entrée avec `fgets()`
-  3. Exécute la commande avec `execute_command()`
-  4. Répète jusqu'à la fin du programme
+### `int main(int argc, char *argv[])`
+- **Rôle** : Fonction principale du shell.
+- **Fonctionnement** :
+  - Initialise le gestionnaire de signaux.
+  - Charge l'historique des commandes.
+  - Gère le mode batch (`-c`) et le mode interactif.
+  - Lit et exécute les commandes en boucle dans le mode interactif.
+- **Gestion des erreurs** : Vérifie les erreurs de lecture des commandes.
 
-##  Variables principales
-
+## Variables principales
 - `char command[MAX_COMMAND_LENGTH]` : Stocke la commande entrée par l'utilisateur.
 
-##  Exemple d'utilisation
+## Exemple d'utilisation
 ```
 my_sh> ls -l
 my_sh> echo "Bonjour"
 Bonjour
+my_sh> man my_sh
 ```
 
-##  Gestion des erreurs
-- `fgets()` est vérifié avec `ferror()` pour détecter les erreurs de lecture.
-- Si `fgets()` échoue, `print_error()` est utilisé.
----
-
+## Autres
+### Gestion des erreurs
+- Vérification des erreurs de lecture (`fgets`).
+- Gestion du signal `SIGCHLD` pour éviter les processus zombies.
 
