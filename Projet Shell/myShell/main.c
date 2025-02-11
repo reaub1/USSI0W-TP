@@ -1,4 +1,13 @@
+/**
+ * @file main.c
+ * @brief Implémentation du main du shell
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #include "mysh.h"
+#include <errno.h>
+#include "utils.h"
 
 int main(int argc, char *argv[]) {
     char command[MAX_COMMAND_LENGTH];
@@ -15,6 +24,9 @@ int main(int argc, char *argv[]) {
         fflush(stdout);
 
         if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL) {
+            if (ferror(stdin)) {
+                print_error("Erreur de lecture de la commande");
+            }
             printf("\n");
             break;
         }

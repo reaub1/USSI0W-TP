@@ -1,0 +1,268 @@
+\doxysection{mysh.\+h File Reference}
+\hypertarget{mysh_8h}{}\label{mysh_8h}\index{mysh.h@{mysh.h}}
+
+
+Header du shell.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{mysh_8h_a29b7451465deac204c5f7cb1f9c6e1fc}\label{mysh_8h_a29b7451465deac204c5f7cb1f9c6e1fc} 
+\#define {\bfseries MAX\+\_\+\+ARGS}~100
+\item 
+\Hypertarget{mysh_8h_af1abcb51a4aa27a5a5a7958c03448134}\label{mysh_8h_af1abcb51a4aa27a5a5a7958c03448134} 
+\#define {\bfseries MAX\+\_\+\+COMMAND\+\_\+\+LENGTH}~1024
+\item 
+\Hypertarget{mysh_8h_ae41c75682d94c3f1a2c7e1e28ed0391a}\label{mysh_8h_ae41c75682d94c3f1a2c7e1e28ed0391a} 
+\#define {\bfseries HISTORY\+\_\+\+FILE}~"{}/.mysh\+\_\+history"{}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{mysh_8h_aaed9effb60c4851e23c4dcd1bb511cb6}{handle\+\_\+sigchld}} ()
+\begin{DoxyCompactList}\small\item\em Gestion des processus zombies. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_a7e39789a9abea5d47a42161b3e25d632}{execute\+\_\+command}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{mysh_8h_a1e698d2178d5c4b62c7a3c038ee5b4db}{is\+\_\+builtin\+\_\+command}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Vérifie si la commande est intégrée. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_a6f15274228420def2fea3c944309012b}{execute\+\_\+builtin\+\_\+command}} (char \texorpdfstring{$\ast$}{*}args\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Exectution des commandes intégrées. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_a07510c1171046134730129ae81869703}{load\+\_\+command\+\_\+history}} ()
+\begin{DoxyCompactList}\small\item\em Charge l\textquotesingle{}historique des commandes depuis le fichier. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_aa24ba921b1b4d04a8f9fbfa468c96d20}{save\+\_\+command\+\_\+to\+\_\+history}} (const char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Sauvegarde une commande dans l\textquotesingle{}historique. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_a6ef3170b5aa61939f82b68768423af0d}{show\+\_\+history}} ()
+\begin{DoxyCompactList}\small\item\em Affiche l\textquotesingle{}historique des commandes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_a0eb72ec18bd84ff7b98c2fce65bfb621}{execute\+\_\+single\+\_\+command}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande simple. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_acc72800480319ee6265afe752c8b3453}{execute\+\_\+with\+\_\+input\+\_\+redirection}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec redirection d\textquotesingle{}entrée. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_a4ebda490d38ee4ae2ba43cbb36417d44}{execute\+\_\+with\+\_\+append\+\_\+redirection}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec redirection de sortie en ajoutant le contenu. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_a760fa456df6cd14ac027a7c7c6a50111}{execute\+\_\+with\+\_\+redirection}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec redirection de sortie. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{mysh_8h_a07fc605baa5b252dd02365ccada6cf9f}{execute\+\_\+with\+\_\+pipe}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec un pipe. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header du shell. 
+
+\begin{DoxyAuthor}{Author}
+PICHON Sébastien, BECHLEM Robin 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/02-\/11 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{mysh_8h_a6f15274228420def2fea3c944309012b}\index{mysh.h@{mysh.h}!execute\_builtin\_command@{execute\_builtin\_command}}
+\index{execute\_builtin\_command@{execute\_builtin\_command}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{execute\_builtin\_command()}{execute\_builtin\_command()}}
+{\footnotesize\ttfamily \label{mysh_8h_a6f15274228420def2fea3c944309012b} 
+void execute\+\_\+builtin\+\_\+command (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{args}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Exectution des commandes intégrées. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & tableau des arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_a7e39789a9abea5d47a42161b3e25d632}\index{mysh.h@{mysh.h}!execute\_command@{execute\_command}}
+\index{execute\_command@{execute\_command}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{execute\_command()}{execute\_command()}}
+{\footnotesize\ttfamily \label{mysh_8h_a7e39789a9abea5d47a42161b3e25d632} 
+void execute\+\_\+command (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_a0eb72ec18bd84ff7b98c2fce65bfb621}\index{mysh.h@{mysh.h}!execute\_single\_command@{execute\_single\_command}}
+\index{execute\_single\_command@{execute\_single\_command}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{execute\_single\_command()}{execute\_single\_command()}}
+{\footnotesize\ttfamily \label{mysh_8h_a0eb72ec18bd84ff7b98c2fce65bfb621} 
+void execute\+\_\+single\+\_\+command (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande simple. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_a4ebda490d38ee4ae2ba43cbb36417d44}\index{mysh.h@{mysh.h}!execute\_with\_append\_redirection@{execute\_with\_append\_redirection}}
+\index{execute\_with\_append\_redirection@{execute\_with\_append\_redirection}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_append\_redirection()}{execute\_with\_append\_redirection()}}
+{\footnotesize\ttfamily \label{mysh_8h_a4ebda490d38ee4ae2ba43cbb36417d44} 
+void execute\+\_\+with\+\_\+append\+\_\+redirection (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec redirection de sortie en ajoutant le contenu. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_acc72800480319ee6265afe752c8b3453}\index{mysh.h@{mysh.h}!execute\_with\_input\_redirection@{execute\_with\_input\_redirection}}
+\index{execute\_with\_input\_redirection@{execute\_with\_input\_redirection}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_input\_redirection()}{execute\_with\_input\_redirection()}}
+{\footnotesize\ttfamily \label{mysh_8h_acc72800480319ee6265afe752c8b3453} 
+void execute\+\_\+with\+\_\+input\+\_\+redirection (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec redirection d\textquotesingle{}entrée. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_a07fc605baa5b252dd02365ccada6cf9f}\index{mysh.h@{mysh.h}!execute\_with\_pipe@{execute\_with\_pipe}}
+\index{execute\_with\_pipe@{execute\_with\_pipe}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_pipe()}{execute\_with\_pipe()}}
+{\footnotesize\ttfamily \label{mysh_8h_a07fc605baa5b252dd02365ccada6cf9f} 
+void execute\+\_\+with\+\_\+pipe (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec un pipe. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_a760fa456df6cd14ac027a7c7c6a50111}\index{mysh.h@{mysh.h}!execute\_with\_redirection@{execute\_with\_redirection}}
+\index{execute\_with\_redirection@{execute\_with\_redirection}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_redirection()}{execute\_with\_redirection()}}
+{\footnotesize\ttfamily \label{mysh_8h_a760fa456df6cd14ac027a7c7c6a50111} 
+void execute\+\_\+with\+\_\+redirection (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec redirection de sortie. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_aaed9effb60c4851e23c4dcd1bb511cb6}\index{mysh.h@{mysh.h}!handle\_sigchld@{handle\_sigchld}}
+\index{handle\_sigchld@{handle\_sigchld}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{handle\_sigchld()}{handle\_sigchld()}}
+{\footnotesize\ttfamily \label{mysh_8h_aaed9effb60c4851e23c4dcd1bb511cb6} 
+void handle\+\_\+sigchld (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gestion des processus zombies. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_a1e698d2178d5c4b62c7a3c038ee5b4db}\index{mysh.h@{mysh.h}!is\_builtin\_command@{is\_builtin\_command}}
+\index{is\_builtin\_command@{is\_builtin\_command}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{is\_builtin\_command()}{is\_builtin\_command()}}
+{\footnotesize\ttfamily \label{mysh_8h_a1e698d2178d5c4b62c7a3c038ee5b4db} 
+int is\+\_\+builtin\+\_\+command (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Vérifie si la commande est intégrée. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à vérifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 1 si la commande est intégrée, 0 sinon 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_a07510c1171046134730129ae81869703}\index{mysh.h@{mysh.h}!load\_command\_history@{load\_command\_history}}
+\index{load\_command\_history@{load\_command\_history}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{load\_command\_history()}{load\_command\_history()}}
+{\footnotesize\ttfamily \label{mysh_8h_a07510c1171046134730129ae81869703} 
+void load\+\_\+command\+\_\+history (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Charge l\textquotesingle{}historique des commandes depuis le fichier. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_aa24ba921b1b4d04a8f9fbfa468c96d20}\index{mysh.h@{mysh.h}!save\_command\_to\_history@{save\_command\_to\_history}}
+\index{save\_command\_to\_history@{save\_command\_to\_history}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{save\_command\_to\_history()}{save\_command\_to\_history()}}
+{\footnotesize\ttfamily \label{mysh_8h_aa24ba921b1b4d04a8f9fbfa468c96d20} 
+void save\+\_\+command\+\_\+to\+\_\+history (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Sauvegarde une commande dans l\textquotesingle{}historique. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à sauvegarder \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{mysh_8h_a6ef3170b5aa61939f82b68768423af0d}\index{mysh.h@{mysh.h}!show\_history@{show\_history}}
+\index{show\_history@{show\_history}!mysh.h@{mysh.h}}
+\doxysubsubsection{\texorpdfstring{show\_history()}{show\_history()}}
+{\footnotesize\ttfamily \label{mysh_8h_a6ef3170b5aa61939f82b68768423af0d} 
+void show\+\_\+history (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Affiche l\textquotesingle{}historique des commandes. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}

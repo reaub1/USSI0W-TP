@@ -1,3 +1,10 @@
+/**
+ * @file typedef.h
+ * @brief Fichier de définition
+ * @author PICHON Sébastien, BECHLEM Robin
+ * @date 2025-02-11
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

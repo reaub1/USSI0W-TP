@@ -23,13 +23,13 @@
 | Exigence | Description | Statut |
 |----------|------------|--------|
 | **CT01** | Compilation via un `Makefile` | ✅ Fait |
-| **CT02** | Définition des structures dans `typedef.h` | ❌ À faire |
-| **CT03** | Séparer les prototypes `.h` et implémentations `.c` | ✅ En place, à affiner |
-| **CT04** | Code documenté avec commentaires | 🚧 En cours |
-| **CT05** | Gestion des erreurs avec `errno` | ❌ À faire |
-| **CTO01** | Documentation avec `doxygen` | ❌ À faire |
-| **CTO02** | Vérification de couverture avec `gcov` | ❌ À faire |
-| **CTO03** | Rédaction d’une page de manuel Linux | ❌ À faire |
+| **CT02** | Définition des structures dans `typedef.h` | ✅ Fait |
+| **CT03** | Séparer les prototypes `.h` et implémentations `.c` | ✅ Fait |
+| **CT04** | Code documenté avec commentaires | ✅ Fait |
+| **CT05** | Gestion des erreurs avec `errno` | ✅ Fait |
+| **CTO01** | Documentation avec `doxygen` | ✅ Fait |
+| **CTO02** | Vérification de couverture avec `gcov` | ✅ Fait
+| **CTO03** | Rédaction d’une page de manuel Linux | ✅ Fait |
 
 ## 📝 Notes de développement
 - **Approche incrémentale** : on implémente d’abord la base, puis on ajoute progressivement les fonctionnalités.

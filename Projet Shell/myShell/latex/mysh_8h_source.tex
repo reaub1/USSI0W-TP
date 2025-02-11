@@ -1,0 +1,38 @@
+\doxysection{mysh.\+h}
+\hypertarget{mysh_8h_source}{}\label{mysh_8h_source}\mbox{\hyperlink{mysh_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ MYSH\_H}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ MYSH\_H}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <sys/wait.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <fcntl.h>}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ MAX\_ARGS\ 100}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ MAX\_COMMAND\_LENGTH\ 1024}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ HISTORY\_FILE\ "{}/.mysh\_history"{}}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_aaed9effb60c4851e23c4dcd1bb511cb6}{handle\_sigchld}}();}
+\DoxyCodeLine{00024\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_a7e39789a9abea5d47a42161b3e25d632}{execute\_command}}(\textcolor{keywordtype}{char}\ *command);}
+\DoxyCodeLine{00025\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{mysh_8h_a1e698d2178d5c4b62c7a3c038ee5b4db}{is\_builtin\_command}}(\textcolor{keywordtype}{char}\ *command);}
+\DoxyCodeLine{00026\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_a6f15274228420def2fea3c944309012b}{execute\_builtin\_command}}(\textcolor{keywordtype}{char}\ *args[]);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_a07510c1171046134730129ae81869703}{load\_command\_history}}();}
+\DoxyCodeLine{00029\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_aa24ba921b1b4d04a8f9fbfa468c96d20}{save\_command\_to\_history}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *command);}
+\DoxyCodeLine{00030\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_a6ef3170b5aa61939f82b68768423af0d}{show\_history}}();}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_a0eb72ec18bd84ff7b98c2fce65bfb621}{execute\_single\_command}}(\textcolor{keywordtype}{char}\ *command);}
+\DoxyCodeLine{00033\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_acc72800480319ee6265afe752c8b3453}{execute\_with\_input\_redirection}}(\textcolor{keywordtype}{char}\ *command);}
+\DoxyCodeLine{00034\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_a4ebda490d38ee4ae2ba43cbb36417d44}{execute\_with\_append\_redirection}}(\textcolor{keywordtype}{char}\ *command);}
+\DoxyCodeLine{00035\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_a760fa456df6cd14ac027a7c7c6a50111}{execute\_with\_redirection}}(\textcolor{keywordtype}{char}\ *command);}
+\DoxyCodeLine{00036\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{mysh_8h_a07fc605baa5b252dd02365ccada6cf9f}{execute\_with\_pipe}}(\textcolor{keywordtype}{char}\ *command);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

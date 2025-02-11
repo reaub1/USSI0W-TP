@@ -1,0 +1,172 @@
+\doxysection{execution.\+c File Reference}
+\hypertarget{execution_8c}{}\label{execution_8c}\index{execution.c@{execution.c}}
+
+
+Implémentation des méthodes d\textquotesingle{}éxécutions des commandes.  
+
+
+{\ttfamily \#include "{}execution.\+h"{}}\newline
+{\ttfamily \#include "{}mysh.\+h"{}}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include "{}builtin\+\_\+commands.\+h"{}}\newline
+{\ttfamily \#include "{}utils.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{execution_8c_a0eb72ec18bd84ff7b98c2fce65bfb621}{execute\+\_\+single\+\_\+command}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande simple. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{execution_8c_acc72800480319ee6265afe752c8b3453}{execute\+\_\+with\+\_\+input\+\_\+redirection}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec redirection d\textquotesingle{}entrée. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{execution_8c_a4ebda490d38ee4ae2ba43cbb36417d44}{execute\+\_\+with\+\_\+append\+\_\+redirection}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec redirection de sortie en ajoutant le contenu. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{execution_8c_a760fa456df6cd14ac027a7c7c6a50111}{execute\+\_\+with\+\_\+redirection}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec redirection de sortie. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{execution_8c_a07fc605baa5b252dd02365ccada6cf9f}{execute\+\_\+with\+\_\+pipe}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec un pipe. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{execution_8c_a27a67b5508bbbc1a20c7491202091b54}{execute\+\_\+with\+\_\+logical\+\_\+operators}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande avec opérateurs logiques. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{execution_8c_a7e39789a9abea5d47a42161b3e25d632}{execute\+\_\+command}} (char \texorpdfstring{$\ast$}{*}command)
+\begin{DoxyCompactList}\small\item\em Exectution d\textquotesingle{}une commande. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implémentation des méthodes d\textquotesingle{}éxécutions des commandes. 
+
+\begin{DoxyAuthor}{Author}
+PICHON Sébastien, BECHLEM Robin 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/02-\/11 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{execution_8c_a7e39789a9abea5d47a42161b3e25d632}\index{execution.c@{execution.c}!execute\_command@{execute\_command}}
+\index{execute\_command@{execute\_command}!execution.c@{execution.c}}
+\doxysubsubsection{\texorpdfstring{execute\_command()}{execute\_command()}}
+{\footnotesize\ttfamily \label{execution_8c_a7e39789a9abea5d47a42161b3e25d632} 
+void execute\+\_\+command (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{execution_8c_a0eb72ec18bd84ff7b98c2fce65bfb621}\index{execution.c@{execution.c}!execute\_single\_command@{execute\_single\_command}}
+\index{execute\_single\_command@{execute\_single\_command}!execution.c@{execution.c}}
+\doxysubsubsection{\texorpdfstring{execute\_single\_command()}{execute\_single\_command()}}
+{\footnotesize\ttfamily \label{execution_8c_a0eb72ec18bd84ff7b98c2fce65bfb621} 
+void execute\+\_\+single\+\_\+command (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande simple. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{execution_8c_a4ebda490d38ee4ae2ba43cbb36417d44}\index{execution.c@{execution.c}!execute\_with\_append\_redirection@{execute\_with\_append\_redirection}}
+\index{execute\_with\_append\_redirection@{execute\_with\_append\_redirection}!execution.c@{execution.c}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_append\_redirection()}{execute\_with\_append\_redirection()}}
+{\footnotesize\ttfamily \label{execution_8c_a4ebda490d38ee4ae2ba43cbb36417d44} 
+void execute\+\_\+with\+\_\+append\+\_\+redirection (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec redirection de sortie en ajoutant le contenu. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{execution_8c_acc72800480319ee6265afe752c8b3453}\index{execution.c@{execution.c}!execute\_with\_input\_redirection@{execute\_with\_input\_redirection}}
+\index{execute\_with\_input\_redirection@{execute\_with\_input\_redirection}!execution.c@{execution.c}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_input\_redirection()}{execute\_with\_input\_redirection()}}
+{\footnotesize\ttfamily \label{execution_8c_acc72800480319ee6265afe752c8b3453} 
+void execute\+\_\+with\+\_\+input\+\_\+redirection (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec redirection d\textquotesingle{}entrée. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{execution_8c_a27a67b5508bbbc1a20c7491202091b54}\index{execution.c@{execution.c}!execute\_with\_logical\_operators@{execute\_with\_logical\_operators}}
+\index{execute\_with\_logical\_operators@{execute\_with\_logical\_operators}!execution.c@{execution.c}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_logical\_operators()}{execute\_with\_logical\_operators()}}
+{\footnotesize\ttfamily \label{execution_8c_a27a67b5508bbbc1a20c7491202091b54} 
+void execute\+\_\+with\+\_\+logical\+\_\+operators (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec opérateurs logiques. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{execution_8c_a07fc605baa5b252dd02365ccada6cf9f}\index{execution.c@{execution.c}!execute\_with\_pipe@{execute\_with\_pipe}}
+\index{execute\_with\_pipe@{execute\_with\_pipe}!execution.c@{execution.c}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_pipe()}{execute\_with\_pipe()}}
+{\footnotesize\ttfamily \label{execution_8c_a07fc605baa5b252dd02365ccada6cf9f} 
+void execute\+\_\+with\+\_\+pipe (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec un pipe. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\Hypertarget{execution_8c_a760fa456df6cd14ac027a7c7c6a50111}\index{execution.c@{execution.c}!execute\_with\_redirection@{execute\_with\_redirection}}
+\index{execute\_with\_redirection@{execute\_with\_redirection}!execution.c@{execution.c}}
+\doxysubsubsection{\texorpdfstring{execute\_with\_redirection()}{execute\_with\_redirection()}}
+{\footnotesize\ttfamily \label{execution_8c_a760fa456df6cd14ac027a7c7c6a50111} 
+void execute\+\_\+with\+\_\+redirection (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Exectution d\textquotesingle{}une commande avec redirection de sortie. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & commande à exécuter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
